@@ -5,45 +5,10 @@ import threading
 import time
 import websockets
 import os
-
+import random
 CONNECTIONS = set()
 
 n = 0
-
-async def register(websocket):
-    CONNECTIONS.add(websocket)
-    try:
-        await websocket.wait_closed()
-    finally:
-        CONNECTIONS.remove(websocket)
-
-async def echo():
-    global n
-    while True:
-        websockets.broadcast(CONNECTIONS, str(n))
-        await asyncio.sleep(1)
-
-async def main():
-    async with websockets.serve(register, "localhost", 5678):
-        await echo()
-
-
-def infiniteloop2():
-    global n
-    n = 0
-    while True:
-        print(n)
-        n += 1
-        time.sleep(1)
-
-thread1 = threading.Thread(target=asyncio.run, args=(main(),))
-thread1.start()
-
-thread2 = threading.Thread(target=infiniteloop2)
-thread2.start()
-
-thread1.join()
-thread2.join()
 
 camera_servo_angle = 0
 
@@ -112,4 +77,59 @@ output_dictionary = {
         "blue": neopixel_b,
     },
     "camera_angle": camera_servo_angle,
+    "time": 0,
 }
+
+async def register(websocket):
+    CONNECTIONS.add(websocket)
+    try:
+        await websocket.wait_closed()
+    finally:
+        CONNECTIONS.remove(websocket)
+
+async def echo():
+    global n
+    while True:
+        websockets.broadcast(CONNECTIONS, str(json.dumps(output_dictionary, indent = 4)))
+        await asyncio.sleep(1)
+
+async def main():
+    async with websockets.serve(register, "localhost", 5678):
+        await echo()
+
+
+def infiniteloop2():
+    global output_dictionary
+    while True:
+        # print(output_dictionary)
+        output_dictionary["time"] += 1
+        output_dictionary["bme680"]["temperature"] = random.randint(0, 20)
+        output_dictionary["bme680"]["gas"] = random.randint(0, 20)
+        output_dictionary["bme680"]["humidity"] = random.randint(0, 20)
+        output_dictionary["bme680"]["pressure"] = random.randint(0, 20)
+        output_dictionary["bme680"]["altitude"] = random.randint(0, 20)
+        output_dictionary["thruster"]["fr"] = round(random.uniform(-1, 1), 2)
+        output_dictionary["thruster"]["fl"] = round(random.uniform(-1, 1), 2)
+        output_dictionary["thruster"]["br"] = round(random.uniform(-1, 1), 2)
+        output_dictionary["thruster"]["bl"] = round(random.uniform(-1, 1), 2)
+        output_dictionary["thruster"]["v1"] = round(random.uniform(-1, 1), 2)
+        output_dictionary["thruster"]["v2"] = round(random.uniform(-1, 1), 2)
+        output_dictionary["arm"]["bldc_0"] = round(random.uniform(-1, 1), 2)
+        output_dictionary["arm"]["bldc_1"] = round(random.uniform(-1, 1), 2)
+        output_dictionary["arm"]["bldc_2"] = round(random.uniform(-1, 1), 2)
+        output_dictionary["arm"]["bldc_3"] = round(random.uniform(-1, 1), 2)
+        output_dictionary["camera_angle"] = random.randint(0, 180)
+        output_dictionary["neopixel"]["red"] = random.randint(0, 255)
+        output_dictionary["neopixel"]["blue"] = random.randint(0, 255)
+        output_dictionary["neopixel"]["green"] = random.randint(0, 255)
+        print(output_dictionary)
+        time.sleep(1)
+
+thread1 = threading.Thread(target=asyncio.run, args=(main(),))
+thread1.start()
+
+thread2 = threading.Thread(target=infiniteloop2)
+thread2.start()
+
+thread1.join()
+thread2.join()
