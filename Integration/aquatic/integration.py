@@ -10,6 +10,7 @@ import neopixel
 import socket
 import sys
 import logging
+import numpy as np
 
 logging.basicConfig(level=logging.DEBUG, filename="DEBUGLOG.log", filemode="w", format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s', datefmt='%H:%M:%S')
 
@@ -23,6 +24,7 @@ logging.info("Socket Connection at :", port)
 i2c, pca, thrusters = None
 i2c = busio.I2C(SCL, SDA)
 pca = PCA9685(i2c)
+
 thrusters = [servo.Servo(pca.channels[i] for i in range(5))]
 logging.info("Thrusters Defined")
 pca.frequency = 50
@@ -45,11 +47,13 @@ pixels = neopixel.NeoPixel(
     pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER
 )
 
+neopixel_r, neopixel_g, neopixel_b = 255, 255, 255
+
 # @TODO: verify thresholds for camera servo
 camera_servo_angle = 0
 camera_servo = servo.Servo(pca.channels[10])
 
-neopixel_r, neopixel_g, neopixel_b = 255, 255, 255
+
 
 thruster_fr = None
 thruster_fl = None
@@ -143,26 +147,6 @@ def init_thrusters():
     time.sleep(7)
     logging.info("Thrusters Initialized")
 
-def gamepad_stream_in():
-    data, address = s.recvfrom(4096)
-    received = data.decode('utf-8')
-    send_data = "received: " + received
-    s.sendto(send_data.encode('utf-8'), address)
-    logging.debug("Gamepad Input", received)
-    return(received)
-
-def gamepad_map(x):
-    x = x.split()
-    if (x[0] == 'SYN_REPORT'):
-        return ('SYN_REPORT')
-    else:
-        return (x)
-
-def gamepad_map_joystick(x):
-    return int(interp(x, [-32768,32767], [-1,1]))
-
-def gamepad_map_trigger(x):
-    return int(interp(x, [0, 1023], [-1,1]))
 
 def end():
     pca.deinit()
@@ -186,6 +170,39 @@ def get_and_log_bme680(bme680, bme680_temperature_offset):
     bme680_pressure = bme680.pressure
     logging.info("Altitude = %0.2f meters" % bme680.altitude)
     bme680_altitude = bme680.altitude
+
+
+
+def set_turning(joystick_position_right):
+    logging.info("Set Turning")
+    if (joystick_position_right[0] > 0.2 or joystick_position_right[0] < -0.2):
+        if (joystick_position_right[0] > 0):
+            turn_right = joystick_position_right[0]
+            turn_left = 0
+
+        elif (joystick_position_right[0] < 0):
+            turn_left = joystick_position_right[0]
+            turn_right = 0
+
+        logging.debug("Turning Factors: Right:", turn_right, "Left:", turn_left)
+    return turn_right,turn_left
+
+def rotate_camera(camera_servo_angle, camera_servo, gamepad_hid_code, game_state):
+    logging.info("Rotating Camera")
+    if (gamepad_hid_code == "ABS_HAT0Y"):
+        # time.sleep(0.01) # is this line necessary?
+        if (game_state == 1):
+            camera_servo_angle += 15
+
+        elif(game_state == -1):
+            camera_servo_angle -= 15
+
+        if (not camera_servo_angle <= 180 and not camera_servo_angle >= 0):
+            logging.debug("Camera Angle:", camera_servo_angle)
+            camera_servo.angle(camera_servo_angle)
+
+    return (camera_servo_angle)
+
 
 def set_left_joystick_position(gamepad_map_joystick, gamepad_hid_code, game_state, joystick_position_left):
     logging.info("Setting Left Joystick Position")
@@ -220,34 +237,28 @@ def get_gamepad_input(gamepad_stream_in, gamepad_map):
     logging.debug("Received Gamepad Input: HID Code:", gamepad_hid_code, " State", game_state)
     return gamepad_hid_code,game_state
 
-def set_turning(joystick_position_right):
-    logging.info("Set Turning")
-    if (joystick_position_right[0] > 0.2 or joystick_position_right[0] < -0.2):
-        if (joystick_position_right[0] > 0):
-            turn_right = joystick_position_right[0]
-            turn_left = 0
+def gamepad_stream_in():
+    data, address = s.recvfrom(4096)
+    received = data.decode('utf-8')
+    send_data = "received: " + received
+    s.sendto(send_data.encode('utf-8'), address)
+    logging.debug("Gamepad Input", received)
+    return(received)
 
-        elif (joystick_position_right[0] < 0):
-            turn_left = joystick_position_right[0]
-            turn_right = 0
+def gamepad_map(x):
+    x = x.split()
+    if (x[0] == 'SYN_REPORT'):
+        return ('SYN_REPORT')
+    else:
+        return (x)
 
-        logging.debug("Turning Factors: Right:", turn_right, "Left:", turn_left)
-    return turn_right,turn_left
+def gamepad_map_joystick(x):
+    return int(np.interp(x, [-32768,32767], [-1,1]))
 
-def rotate_camera(camera_servo_angle, camera_servo, gamepad_hid_code, game_state):
-    logging.info("Rotating Camera")
-    if (gamepad_hid_code == "ABS_HAT0Y"):
-        # time.sleep(0.01) # is this line necessary?
-        if (game_state == 1):
-            camera_servo_angle += 15
+def gamepad_map_trigger(x):
+    return int(np.interp(x, [0, 1023], [-1,1]))
 
-        elif(game_state == -1):
-            camera_servo_angle -= 15
 
-        if (not camera_servo_angle <= 180 and not camera_servo_angle >= 0):
-            logging.debug("Camera Angle:", camera_servo_angle)
-            camera_servo.angle(camera_servo_angle)
-    return(camera_servo_angle)
 
 if __name__ == "__main__":
     try:
