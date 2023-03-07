@@ -1,6 +1,9 @@
 import logging
 import os
 from socket import socket, AF_INET, SOCK_DGRAM
+from adafruit_pca9685 import PCA9685
+from busio import I2C
+from board import SCL, SDA
 
 from .gamepad import Gamepad
 from .thrusters import Thrusters
@@ -16,10 +19,13 @@ logging.basicConfig(
     datefmt='%H:%M:%S'
 )
 
+i2c = I2C(SCL, SDA)
+pca = PCA9685(i2c)
+
 gamepad = Gamepad()
-thrusters = Thrusters()
-bme680 = BME680()
-camera = Camera()
+thrusters = Thrusters(pca.channels[:5])
+bme680 = BME680(i2c)
+camera = Camera(pca.channels[10])
 pixels = Pixels()
 
 os.system("ffmpeg -f v4l2 -i /dev/video0 -c:v h264_v4l2m2m -b:v 125000 -fflags nobuffer -flags low_delay -preset ultrafast -tune zerolatency -probesize 32 -num_output_buffers 32 -num_capture_buffers 16 -analyzeduration 0 -f mpegts udp://192.168.100.52:1234")
