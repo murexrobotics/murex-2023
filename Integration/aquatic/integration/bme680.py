@@ -13,19 +13,19 @@ class BME680():
     @property
     def temperature(self):
         return self.bme680.temperature + TEMPERATURE_OFFSET
-    
+
     @property
     def humidity(self):
         return self.bme680.humidity
-    
+
     @property
     def pressure(self):
         return self.bme680.pressure
-    
+
     @property
     def gas(self):
         return self.bme680.gas
-    
+
     @property
     def altitude(self):
         return self.bme680.altitude

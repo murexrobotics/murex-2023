@@ -14,8 +14,8 @@ class Thrusters():
     def __init__(self, channels):
         logging.info("Initializing Thrusters, waiting 7 seconds")
         self.thrusters = [Servo(
-            pwm_out=channel, 
-            min_pulse=MIN_PLUSE_WIDTH, 
+            pwm_out=channel,
+            min_pulse=MIN_PLUSE_WIDTH,
             max_pulse=MAX_PLUSE_WIDTH
         ) for channel in channels]
 
@@ -43,7 +43,7 @@ class Thrusters():
         # Aidan's Thrust Vectoring Formula
         turn_right, turn_left = gamepad.turn
         [left_joystick_x, left_joystick_y] = gamepad.left_joystick
-        
+
         thruster_fr = ((-left_joystick_y + left_joystick_x) / (2 ** 0.5)) + turn_left
         thruster_fl = ((left_joystick_y + left_joystick_x) / (2 ** 0.5)) + turn_right
         thruster_br = ((left_joystick_y + left_joystick_x) / (2 ** 0.5)) + -turn_left
@@ -75,4 +75,3 @@ class Thrusters():
         logging.info("Stopping thrusters")
         # Should stop motors
         self.thrusters.map(lambda thruster: thruster.fraction(0.5))
-

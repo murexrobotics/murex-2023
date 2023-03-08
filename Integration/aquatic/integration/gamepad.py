@@ -14,7 +14,7 @@ class Gamepad():
         data, address = server.recvfrom(port)
         message = data.decode() # UTF-8 is used by default
         server.sendto(
-            f"Received: {message}".encode(), 
+            f"Received: {message}".encode(),
             address
         )
 
@@ -37,18 +37,18 @@ class Gamepad():
             # This is a SYN report
             # TODO: Make this more robust
             return 'SYN REPORT', None
-        
+
 
         # I know this looks goofy but it calls the setter methods
         self.right_joystick = self.right_joystick
         self.left_joystick = self.left_joystick
-        
+
         return self._hid_code, self._game_state
 
     @property
     def left_joystick(self):
         return self._left_joystick
-    
+
     @left_joystick.setter
     def left_joystick(self, position):
         interpolated_game_state = int(np.interp(self.game_state, [-32768,32767], [-1,1]))
@@ -58,11 +58,11 @@ class Gamepad():
 
         if (self.hid_code == "ABS_X"):
             self._left_joystick = [interpolated_game_state, position[1]]
-    
+
     @property
     def right_joystick(self):
         return self._right_joystick
-    
+
     @right_joystick.setter
     def right_joystick(self, position):
         interpolated_game_state = int(np.interp(self.game_state, [-32768,32767], [-1,1]))
