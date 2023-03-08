@@ -12,10 +12,10 @@ from .camera import Camera
 from .pixels import Pixels
 
 logging.basicConfig(
-    level=logging.DEBUG, 
-    filename="DEBUGLOG.log", 
-    filemode="w", 
-    format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s', 
+    level=logging.DEBUG,
+    filename="DEBUGLOG.log",
+    filemode="w",
+    format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
     datefmt='%H:%M:%S'
 )
 
@@ -58,4 +58,3 @@ while True:
 
     # Stream Telemetry
     # asyncio.run(telemetry_server.main(output_dictionary))
-

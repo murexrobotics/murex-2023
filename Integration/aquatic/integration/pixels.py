@@ -16,7 +16,7 @@ class Pixels():
         self.red = 255
         self.green = 255
         self.blue = 255
-    
+
     def set_color(self, red, green, blue):
         logging.debug(f"Updated pixels color to: {red=}, {green=}, {blue=}")
         self.red = red
