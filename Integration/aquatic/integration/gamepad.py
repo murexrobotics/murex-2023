@@ -87,3 +87,12 @@ class Gamepad():
 
         return turn_right, turn_left
     
+    def telemetry(self):
+        return {
+            "gamepad": {
+                "hid_code": self.hid_code,
+                "game_state": self.game_state,
+                "left_joystick": self.left_joystick,
+                "right_joystick": self.right_joystick
+            }
+        }

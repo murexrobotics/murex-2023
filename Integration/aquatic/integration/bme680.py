@@ -30,3 +30,12 @@ class BME680():
     def altitude(self):
         return self.bme680.altitude
     
+    def telemetry(self):
+        return { "bme680": {
+            "temperature": self.temperature,
+            "humidity": self.humidity,
+            "pressure": self.pressure,
+            "gas": self.gas,
+            "altitude": self.altitude
+        }}
+    

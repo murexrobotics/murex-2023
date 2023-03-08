@@ -30,3 +30,10 @@ class Pixels():
 
     def show(self):
         self.pixels.show()
+
+    def telemetry(self):
+        return { "neopixel": {
+            "red": self.red,
+            "green": self.green,
+            "blue": self.blue
+        }}

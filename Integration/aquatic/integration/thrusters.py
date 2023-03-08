@@ -61,6 +61,15 @@ class Thrusters():
             thruster_v,
             thruster_v
         )
+
+    def telemetry(self):
+        return { "thrusters": {
+            "fr": self.thrusters[0].fraction,
+            "fl": self.thrusters[1].fraction,
+            "br": self.thrusters[2].fraction,
+            "bl": self.thrusters[3].fraction,
+            "v": self.thrusters[4].fraction
+        }}
     
     def __del__(self):
         logging.info("Stopping thrusters")

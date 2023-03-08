@@ -26,3 +26,8 @@ class Camera():
     def __del__(self):
         logging.info("Resetting camera angle")
         self.camera_servo.angle = 0
+
+    def telemetry(self):
+        return { "camera": {
+            "camera_angle": self.angle
+        }}
