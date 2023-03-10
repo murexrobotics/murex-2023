@@ -13,6 +13,7 @@ void setup() {
 
 void loop() {
   if (Serial.available()) {
+    Serial.println("hello");
     //input speed, must be int between -255 and 255
     //-255 = max speed backward; 0 = stop; 255 = max speed forward
     pwm=Serial.parseInt();

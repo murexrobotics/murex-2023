@@ -34,6 +34,7 @@ pca.frequency = 50
 for i in range(16):
     kit.servo[i].set_pulse_width(1500) # "i" refers to the channel on PCA9685
 
+
 # BNO055 IMU
 i2c = board.I2C(SCL, SDA)
 bno055 = adafruit_bno055.BNO055_I2C(i2c)
