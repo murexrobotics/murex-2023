@@ -37,7 +37,7 @@ Functions:
     set_color(red, green, blue):
         Sets the color of neopixel, if channel is not specified, it won't be updated, takes kwargs.
 
-    set_brightness(gamepad: Gamepad):
+    set_brightness(brightness):
         Sets the brightness of th neopixel
 
     show():
