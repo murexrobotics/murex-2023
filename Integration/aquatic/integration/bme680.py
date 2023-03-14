@@ -38,4 +38,3 @@ class BME680():
             "gas": self.gas,
             "altitude": self.altitude
         }}
-    
