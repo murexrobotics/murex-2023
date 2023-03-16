@@ -48,4 +48,6 @@
 </h1>
 
 <Sensors temperature={temperature} gas={gas} humidity={humidity} pressure={pressure} altitude={altitude}></Sensors>
-<Chart temperature={temperature} gas={gas} humidity={humidity} pressure={pressure} altitude={altitude}></Chart>
+<div class="flex flex-wrap">
+    <Chart temperature={temperature} gas={gas} humidity={humidity} pressure={pressure} altitude={altitude}></Chart>
+</div>
