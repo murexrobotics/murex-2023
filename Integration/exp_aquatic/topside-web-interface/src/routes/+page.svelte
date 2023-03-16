@@ -3,6 +3,7 @@
     import { onMount } from 'svelte';
     import "../app.css";
     import Sensors from '../components/Sensors.svelte';
+    import Chart from '../components/Chart.svelte'
     let name = 'byran';
     let websocket;
     /**
@@ -47,3 +48,4 @@
 </h1>
 
 <Sensors temperature={temperature} gas={gas} humidity={humidity} pressure={pressure} altitude={altitude}></Sensors>
+<Chart temperature={temperature} gas={gas} humidity={humidity} pressure={pressure} altitude={altitude}></Chart>

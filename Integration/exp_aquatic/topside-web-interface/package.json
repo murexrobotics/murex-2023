@@ -29,6 +29,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"chart.js": "^4.2.1",
 		"ws": "^8.12.1"
 	}
 }
