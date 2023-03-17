@@ -38,7 +38,7 @@ Functions:
     set_thrusts(*thrusts):
         Sets the thrust of each thruster
 
-    adjust_magnitudes_from_gamepad(gamepad: Gamepad):
+    adjust_magnitudes(gamepad: Gamepad):
         Adjusts the thrust of each thruster based on the gamepad
 
     telemetry():
@@ -49,6 +49,7 @@ Todo:
 -----
     * Abstract parts of thruster code to work with BLDC motors
     * More + Better logging
+    * Implement set_thrusters from the original integration code
 """
 
 import logging
