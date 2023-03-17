@@ -4,7 +4,7 @@
 	/**
 	 * @type {any}
 	 */
-	let tempChart;
+	let charts = [];
 	/**
 	 * @type {any}
 	 */
@@ -12,15 +12,7 @@
 	/**
 	 * @type {any}
 	 */
-	let gasChart;
-	/**
-	 * @type {any}
-	 */
 	export let gas;
-	/**
-	 * @type {any}
-	 */
-	let humidityChart;
 	/**
 	 * @type {any}
 	 */
@@ -28,15 +20,7 @@
 	/**
 	 * @type {any}
 	 */
-	let pressureChart;
-	/**
-	 * @type {any}
-	 */
 	export let pressure;
-	/**
-	 * @type {any}
-	 */
-	let altitudeChart;
 	/**
 	 * @type {any}
 	 */
@@ -45,55 +29,18 @@
 	var numberElements = 100;
 	var updateCount = [1, 1, 1, 1, 1];
 	function addData() {
-		if (temperature) {
-			tempChart.data.labels = [...tempChart.data.labels, updateCount[0]];
-			tempChart.data.datasets[0].data = [...tempChart.data.datasets[0].data, temperature];
-			if (updateCount[0] > numberElements) {
-				tempChart.data.labels.shift();
-				tempChart.data.datasets[0].data.shift();
+		var vals = [temperature, gas, humidity, pressure, altitude];
+		for(var i = 0; i < 5; i++) {
+			if(vals[i]) {
+				charts[i].data.labels = [...charts[i].data.labels, updateCount[i]];
+				charts[i].data.datasets[0].data = [...charts[i].data.datasets[0].data, vals[i]];
+				if (updateCount[i] > numberElements) {
+					charts[i].data.labels.shift();
+					charts[i].data.datasets[0].data.shift();
+				}
+				updateCount[i]++;
+				charts[i].update('none');
 			}
-			updateCount[0]++;
-			tempChart.update('none');
-		}
-		if (gas) {
-			gasChart.data.labels = [...gasChart.data.labels, updateCount[1]];
-			gasChart.data.datasets[0].data = [...gasChart.data.datasets[0].data, gas];
-			if (updateCount[1] > numberElements) {
-				gasChart.data.labels.shift();
-				gasChart.data.datasets[0].data.shift();
-			}
-			updateCount[1]++;
-			gasChart.update('none');
-		}
-		if (humidity) {
-			humidityChart.data.labels = [...humidityChart.data.labels, updateCount[2]];
-			humidityChart.data.datasets[0].data = [...humidityChart.data.datasets[0].data, humidity];
-			if (updateCount[2] > numberElements) {
-				humidityChart.data.labels.shift();
-				humidityChart.data.datasets[0].data.shift();
-			}
-			updateCount[2]++;
-			humidityChart.update('none');
-		}
-		if (pressure) {
-			pressureChart.data.labels = [...pressureChart.data.labels, updateCount[3]];
-			pressureChart.data.datasets[0].data = [...pressureChart.data.datasets[0].data, pressure];
-			if (updateCount[3] > numberElements) {
-				pressureChart.data.labels.shift();
-				pressureChart.data.datasets[0].data.shift();
-			}
-			updateCount[3]++;
-			pressureChart.update('none');
-		}
-		if (altitude) {
-			altitudeChart.data.labels = [...altitudeChart.data.labels, updateCount[4]];
-			altitudeChart.data.datasets[0].data = [...altitudeChart.data.datasets[0].data, altitude];
-			if (updateCount[4] > numberElements) {
-				altitudeChart.data.labels.shift();
-				altitudeChart.data.datasets[0].data.shift();
-			}
-			updateCount[4]++;
-			altitudeChart.update('none');
 		}
 	}
 	function updateData() {
@@ -101,7 +48,7 @@
 		setTimeout(updateData, updateInterval);
 	}
 	onMount(async () => {
-		tempChart = new Chart(tempChart, {
+		charts[0] = new Chart(charts[0], {
 			type: 'line',
 			data: {
 				labels: [0],
@@ -121,7 +68,7 @@
 				}
 			}
 		});
-		gasChart = new Chart(gasChart, {
+		charts[1] = new Chart(charts[1], {
 			type: 'line',
 			data: {
 				labels: [0],
@@ -141,7 +88,7 @@
 				}
 			}
 		});
-		humidityChart = new Chart(humidityChart, {
+		charts[2] = new Chart(charts[2], {
 			type: 'line',
 			data: {
 				labels: [0],
@@ -161,7 +108,7 @@
 				}
 			}
 		});
-		pressureChart = new Chart(pressureChart, {
+		charts[3] = new Chart(charts[3], {
 			type: 'line',
 			data: {
 				labels: [0],
@@ -181,7 +128,7 @@
 				}
 			}
 		});
-		altitudeChart = new Chart(altitudeChart, {
+		charts[4] = new Chart(charts[4], {
 			type: 'line',
 			data: {
 				labels: [0],
@@ -206,17 +153,17 @@
 </script>
 
 <div class="w-1/3">
-	<canvas id="tempChart" bind:this={tempChart} />
+	<canvas id="tempChart" bind:this={charts[0]} />
 </div>
 <div class="w-1/3">
-	<canvas id="gasChart" bind:this={gasChart} />
+	<canvas id="gasChart" bind:this={charts[1]} />
 </div>
 <div class="w-1/3">
-	<canvas id="humidityChart" bind:this={humidityChart} />
+	<canvas id="humidityChart" bind:this={charts[2]} />
 </div>
 <div class="w-1/3">
-	<canvas id="pressureChart" bind:this={pressureChart} />
+	<canvas id="pressureChart" bind:this={charts[3]} />
 </div>
 <div class="w-1/3">
-	<canvas id="altitudeChart" bind:this={altitudeChart} />
+	<canvas id="altitudeChart" bind:this={charts[4]} />
 </div>
