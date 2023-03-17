@@ -46,7 +46,6 @@ Functions:
         
 Todo:
 -----
-    * Enforce kwargs for set_color
     * More + Better logging
     * Telemetry/ diagnostics data
 """
@@ -69,7 +68,7 @@ red = 255
 green = 255
 blue = 255
 
-def set_color(_red: int = None, _green: int = None, _blue: int = None):
+def set_color(*, _red: int = None, _green: int = None, _blue: int = None):
     """Takes in keyword arguments for Neopixel color, updates neopixel color."""
 
     # Using global variables like this is bad practice, find better alternative
