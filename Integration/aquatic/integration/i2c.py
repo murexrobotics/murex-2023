@@ -16,3 +16,6 @@ from busio import I2C
 from board import SCL, SDA
 
 i2c = I2C(SCL, SDA)
+
+if __name__ == '__main__':
+    assert i2c is not None, "I2C bus not initialized"

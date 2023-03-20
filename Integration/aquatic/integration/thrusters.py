@@ -136,4 +136,24 @@ def _stop():
 # Gracefully stop thrusters on exit
 atexit.register(_stop)
 
+if __name__ == '__main__':
+    """Test Thrusters"""
+    logging.basicConfig(level=logging.DEBUG)
+    logging.info("Testing thrusters")
+    
+    from time import sleep
+    assert len(_thrusters) == 6, "Thrusters not initialized properly, there should be 6"
+    assert type(_thrusters[0]) == Servo
+
+    logging.info("Assertions passed, testing thrusters")
+
+    set_thrusts(1, 1, 1, 1, 1, 1)
+    sleep(1)
+    set_thrusts(-1, -1, -1, -1, -1, -1)
+    sleep(1)
+
+    logging.info("Testing complete")
+
+
+
 

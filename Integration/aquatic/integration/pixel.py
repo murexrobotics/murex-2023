@@ -101,3 +101,33 @@ def _stop():
     _neopixel.deinit()
 
 atexit.register(_stop)
+
+if __name__ == '__main__':
+    """Test code for thrusters"""
+    logging.basicConfig(level=logging.DEBUG)
+    logging.info("Testing neopixel")
+
+    from time import sleep
+
+    assert _neopixel is not None, "Neopixel not initialized"
+    assert _neopixel.pin is not None, "Neopixel pin not bound to pin"
+
+    logging.info("Assertions passed, testing neopixel")
+
+    set_color(_red=255, _green=0, _blue=0)
+    show()
+    sleep(1)
+
+    set_color(_red=0, _green=255, _blue=0)
+    show()
+    sleep(1)
+
+    set_color(_red=0, _green=0, _blue=255)
+    show()
+    sleep(1)
+
+    set_color(_red=255, _green=255, _blue=255)
+    show()
+    sleep(1)
+
+    logging.info("Neopixel test passed")

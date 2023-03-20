@@ -24,6 +24,7 @@ from adafruit_pca9685 import PCA9685
 from .i2c import i2c
 
 pca = PCA9685(i2c)
+pca.frequency = 50
 
 THRUSTER_CHANNELS = pca.channels[:6]
 ARM_BLDC_CHANNELS = pca.channels[6:10]
@@ -36,3 +37,18 @@ def _stop():
 # Make sure that PCA9685 is gracefully shut off so that other 
 # components can also be gracefully stopped.
 atexit.register(_stop)
+
+if __name__ == '__main__':
+    """Tests PCA9685 initialization"""
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
+    logging.info("Testing PCA9685 initialization")
+
+    assert pca is not None, "PCA9685 not initialized"
+    assert i2c.scan() != [], "No I2C devices found, PCA Not registered"
+
+    logging.info("PCA9685 initialized successfully")
+    
+
+
+

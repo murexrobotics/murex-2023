@@ -31,3 +31,20 @@ class Camera():
         return { "camera": {
             "camera_angle": self.angle
         }}
+
+if __name__ == "__main__":
+    """Test code for camera servo"""
+    logging.basicConfig(level=logging.DEBUG)
+    logging.info("Testing camera servo")
+
+    from pca9685 import CAMERA_SERVO_CHANNEL
+    from time import sleep
+
+    camera = Camera(CAMERA_SERVO_CHANNEL)
+    camera.rotate("ABS_HAT0Y", 45)
+    print(camera.telemetry())
+    sleep(1)
+    camera.rotate("ABS_HAT0Y", 135)
+    print(camera.telemetry())
+
+    logging.info("Done testing camera servo")

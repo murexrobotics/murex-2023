@@ -38,3 +38,17 @@ class BME680():
             "gas": self.gas,
             "altitude": self.altitude
         }}
+    
+if __name__ == "__main__":
+    """Test code for BME680"""
+    logging.basicConfig(level=logging.DEBUG)
+    logging.info("Testing BME680")
+    
+    import i2c
+    assert i2c.scan() is not [], "No I2C devices found"
+
+    logging.info("Assertions Passed, testing BME680")
+
+    bme680 = BME680(i2c)
+    print(bme680.telemetry())
+    logging.info("Done testing BME680")
