@@ -22,7 +22,7 @@ import thrusters
 # initialize gamepad
 import gamepad
 
-thrusters.adjust_magnitudes_from_gamepad(gamepad)
+thrusters.adjust_magnitudes(gamepad)
 ...
 ```
 
@@ -32,7 +32,11 @@ Constants:
     MIN_PLUSE_WIDTH (int): Minimum pulse width for thrusters
     MAX_PLUSE_WIDTH (int): Maximum pulse width for thrusters
 
-    
+    STOP_DUTY_CYCLE (int): Duty cycle for thrusters to stop
+    MAX_DUTY_CYCLE (int): Maximum duty cycle for thrusters
+    MIN_DUTY_CYCLE (int): Minimum duty cycle for thrusters
+
+
 Functions:
 ----------
     set_thrusts(*thrusts):
