@@ -57,25 +57,54 @@ from adafruit_motor.servo import Servo
 import time
 import atexit
 
-from .gamepad import Gamepad
-from .pca9685 import THRUSTER_CHANNELS
+from gamepad import Gamepad
+from pca9685 import THRUSTER_CHANNELS
+from adafruit_pca9685 import PWMChannel
 
 # Thruster Constants
 THRUSTER_INIT_TIME = 7
 MIN_PLUSE_WIDTH = 1100
 MAX_PLUSE_WIDTH = 1900
 
-# Actually initialize thrusters
-_thrusters = [Servo(
-    pwm_out=channel,
-    min_pulse=MIN_PLUSE_WIDTH,
-    max_pulse=MAX_PLUSE_WIDTH
-) for channel in THRUSTER_CHANNELS]
+STOP_DUTY_CYCLE = 5232
+MAX_DUTY_CYCLE = 6880 # IMPORTANT: Subject to change, this was the max achieved in testing but powersupply could not supply sufficient current current
+MIN_DUTY_CYCLE = 3600 # IMPORTANT: Subject to change, this was the max achieved in testing but powersupply could not supply sufficient current current
 
-_thrusters.map(lambda thruster: thruster.fraction(0.5))
+# Actually initialize thrusters
+
+class Thruster():
+    def __init__(self, channel: PWMChannel):
+        self.pwm_channel = channel
+        self.pwm_channel.duty_cycle = STOP_DUTY_CYCLE
+        self._throttle = 0
+
+    @property
+    def throttle(self):
+        return self._throttle
+
+    @throttle.setter
+    def throttle(self, throttle: float):
+        if throttle > 1 or throttle < -1:
+            message = f"Thruster throttle set to {throttle}, which is outside of the range [-1, 1]"
+            logging.error(message) # It is bad but not quite critical, still warants a program exit though for testing
+            # For competition, errors should be handled differently so that the program does not exit while in the water even if something critical goes wrong
+            raise ValueError(message)
+        
+        self._throttle = throttle
+        
+        if throttle < 0:
+            self.pwm_channel.duty_cycle = STOP_DUTY_CYCLE - int(abs(throttle) * (STOP_DUTY_CYCLE - MIN_DUTY_CYCLE))
+        elif throttle > 0:
+            self.pwm_channel.duty_cycle = STOP_DUTY_CYCLE + int(throttle * (MAX_DUTY_CYCLE - STOP_DUTY_CYCLE))
+        else:
+            self.pwm_channel.duty_cycle = STOP_DUTY_CYCLE
+        
+    def deinit(self):
+        self.pwm_channel.duty_cycle = STOP_DUTY_CYCLE
+
+_thrusters = [Thruster(channel) for channel in THRUSTER_CHANNELS]
 time.sleep(THRUSTER_INIT_TIME)
 logging.info("Thrusters Initialized")
-
 
 # Thruster Methods
 def set_thrusts(*thrusts: float):
@@ -86,18 +115,15 @@ def set_thrusts(*thrusts: float):
         raise ValueError("Number of arguments must match number of thrusters")
 
     for i, thrust in enumerate(thrusts):
-        # Sets bounds on thrust
-        thrust = min(max(thrust, -1), 1)
-
-        # SPEED/2 + 0.5 is used to translate fraction from -1 <-> 1
-        thrust_frac = (thrust / 2) + 0.5
-        logging.debug(f"Set Thrusters[{i}] to {thrust_frac}")
-        _thrusters[i].fraction(thrust_frac)
+        logging.debug(f"Set Thrusters[{i}] to {thrust}")
+        _thrusters[i].throttle = thrust
 
 def adjust_magnitudes(gamepad: Gamepad):
     """Adjusts the thrust of each thruster based on the gamepad state"""
+    # TODO: Update this so it uses new thrust vectoring formula and add togglable thrust normalization mode.
     logging.info("Updating thrusters from gamepad")
-    # Aidan's Thrust Vectoring Formula
+
+    # Aidan's Old Thrust Vectoring Formula
     turn_right, turn_left = gamepad.turn
     [left_joystick_x, left_joystick_y] = gamepad.left_joystick
 
@@ -121,11 +147,11 @@ def adjust_magnitudes(gamepad: Gamepad):
 
 def telemetry():
     return { "thrusters": {
-        "fr": _thrusters[0].fraction,
-        "fl": _thrusters[1].fraction,
-        "br": _thrusters[2].fraction,
-        "bl": _thrusters[3].fraction,
-        "v": _thrusters[4].fraction
+        "fr": _thrusters[0].throttle,
+        "fl": _thrusters[1].throttle,
+        "br": _thrusters[2].throttle,
+        "bl": _thrusters[3].throttle,
+        "v": _thrusters[4].throttle,
     }}
 
 def _stop():
