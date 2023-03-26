@@ -57,7 +57,6 @@ Todo:
 """
 
 import logging
-from adafruit_motor.servo import Servo
 import time
 import atexit
 
@@ -173,7 +172,6 @@ if __name__ == '__main__':
     
     from time import sleep
     assert len(_thrusters) == 6, "Thrusters not initialized properly, there should be 6"
-    assert type(_thrusters[0]) == Servo
 
     logging.info("Assertions passed, testing thrusters")
 
