@@ -1,38 +1,88 @@
+"""
+Initializes PCA9685, and defines channels to be used for 
+each component. (Deinitializes on program exit)
+
+Note: Importing a module runs all the code inside of it,
+however, python modules are also singleton by nature. At 
+any given time only one instance can be created. Thus the 
+code in this file will run only once, on the first import, 
+making it suitable for initialization
+
+Example:
+--------
+```Python
+# Import telemetry
+import telemetry
+
+# Initialize components
+import thrusters
+import gamepad
+import bme680
+
+# Start telemetry server
+telemetry.start(gamepad, thrusters, bme680)
+...
+```
+
+Constants:
+----------
+    IP (str): IP address of telemetry server
+    PORT (int): Port of telemetry server
+    PERIOD (float): Period between each transmission of telemetry data
+
+Functions:
+----------
+    start(*components): Starts telemetry server that send updated from components
+"""
+
+import asyncio
 import websockets
-import atexit
 import json
 import logging
 
 IP = "192.168.100.1"
 PORT = 1234
+PERIOD = 1 # Adjust as needed, controls how often telemetry is sent
 
-async def echo(websocket):
-    async for message in websocket:
-        await websocket.send(message)
 
-connection = websockets.serve(echo, IP, PORT)
+def _handler(*components):
+    """Returns handler function for telemetry websocket server"""
+    async def send(websocket):
+        """Sends telemetry data to client"""
+        while True:
+            telemetry_data = dict()
 
-def send(*components):
-    telemetry_data = dict()
+            for component in components:
+                if hasattr(component, "telemetry") and callable(component.telemetry):
+                    temp_telemetry = component.telemetry() # Aggregate telemetry data from component
+                    telemetry_data.update(temp_telemetry) # Store findings
+                else:
+                    # If object does not have associated telemetry method something wrong has been passed in
+                    logging.error(f"Object {component} does not have a telemetry method")
+                    raise TypeError(f"Object {component} does not have a telemetry method")
+            
+            logging.debug("Telemetry Payload Sent: ")
+            await websocket.send(str(json.dumps(telemetry_data))) # Send telemetry data to client
+            await asyncio.sleep(PERIOD)
+            
+    return send
 
-    for component in components:
-        if hasattr(component, "telemetry") and callable(component.telemetry):
-            temp_telemetry = component.telemetry()
-            telemetry_data.update(temp_telemetry)
-        else:
-            raise TypeError(f"Object {component} does not have a telemetry method")
-        
-    connection.send(str(json.dumps(telemetry_data)))
+async def start(*components):
+    """Starts telemetry websocket server"""
+    async with websockets.serve(_handler(*components), IP, PORT):
+        logging.info(f"Telemetry server started on {IP}:{PORT}")
+        await asyncio.Future() # TODO: Swap for something else if there is time
 
-def _stop():
-    connection.close()
+async def _test():
+    """Setup mock telemetry server for testing"""
+    from i2c import i2c
+    from bme680 import BME680
+    bme = BME680(i2c) # BME is easiest to test with, but any component can be used
 
-# Gracefully close the connection when the program exits
-atexit.register(_stop)
+    await start(bme)
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
-    logging.warn("No tests written for telemetry data, exiting...")
-        
-    
-
+    # Running this as server is the test, functionality should be tested manually
+    asyncio.run(_test())
