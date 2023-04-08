@@ -54,7 +54,3 @@ atexit.register(_stop)
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     _test()
-    
-
-
-
