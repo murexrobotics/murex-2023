@@ -29,6 +29,27 @@ bme680_gas = None
 bme680_humidity = None
 bme680_pressure = None
 bme680_altitude = None
+joystick_left = None
+joystick_right = None
+button_y = None
+button_x = None
+button_b = None
+button_a = None
+button_view = None
+button_menu = None
+button_xbox = None
+joystick_left_x = None
+joystick_left_y = None
+joystick_right_x = None
+joystick_right_y = None
+dpad_up = None
+dpad_down = None
+dpad_left = None
+dpad_right = None
+trigger_right = None
+trigger_left = None
+bumper_right = None
+bumper_left = None
 
 
 output_dictionary = {
@@ -54,27 +75,25 @@ output_dictionary = {
         "altitude": bme680_altitude,
     },
     "joystick": {
-        "joystick_left": "",
-        "joystick_right": "",
-        "button_y": "",
-        "button_x": "",
-        "button_b": "",
-        "button_a": "",
-        "button_joystick_left": "",
-        "button_joystick_right": "",
-        "button_menu": "",
-        "button_window": "",
-        "button_xbox_logo": "",
-        "d_pad": "",
-        "trigger_right": "",
-        "trigger_left": "",
-        "bumper_right": "",
-        "bumper_left": "",
-    },
-    "neopixel": {
-        "red": neopixel_r,
-        "green": neopixel_g,
-        "blue": neopixel_b,
+        "joystick_left_x": joystick_left_x,
+        "joystick_left_y": joystick_left_y,
+        "joystick_right_x": joystick_right_x,
+        "joystick_right_y": joystick_right_y,
+        "button_y": button_y,
+        "button_x": button_x,
+        "button_b": button_b,
+        "button_a": button_a,
+        "button_menu": button_menu,
+        "button_view": button_view,
+        "button_xbox": button_xbox,
+        "dpad_up": dpad_up,
+        "dpad_down": dpad_down,
+        "dpad_left": dpad_left,
+        "dpad_right": dpad_right,
+        "trigger_right": trigger_right,
+        "trigger_left": trigger_left,
+        "bumper_right": bumper_right,
+        "bumper_left": bumper_left,
     },
     "camera_angle": camera_servo_angle,
     "time": 0,
@@ -119,9 +138,27 @@ def infiniteloop2():
         output_dictionary["arm"]["bldc_2"] = round(random.uniform(-1, 1), 2)
         output_dictionary["arm"]["bldc_3"] = round(random.uniform(-1, 1), 2)
         output_dictionary["camera_angle"] = random.randint(0, 180)
-        output_dictionary["neopixel"]["red"] = random.randint(0, 255)
-        output_dictionary["neopixel"]["blue"] = random.randint(0, 255)
-        output_dictionary["neopixel"]["green"] = random.randint(0, 255)
+        output_dictionary["joystick"]["joystick_left_x"] = round(random.uniform(-1, 1), 2)
+        output_dictionary["joystick"]["joystick_left_y"] = round(random.uniform(-1, 1), 2)
+        output_dictionary["joystick"]["joystick_right_x"] = round(random.uniform(-1, 1), 2)
+        output_dictionary["joystick"]["joystick_right_y"] = round(random.uniform(-1, 1), 2)
+        output_dictionary["joystick"]["button_joystick_left"] = random.randint(0, 1)
+        output_dictionary["joystick"]["button_joystick_right"] = random.randint(0, 1)
+        output_dictionary["joystick"]["button_y"] = random.randint(0, 1)
+        output_dictionary["joystick"]["button_x"] = random.randint(0, 1)
+        output_dictionary["joystick"]["button_b"] = random.randint(0, 1)
+        output_dictionary["joystick"]["button_a"] = random.randint(0, 1)
+        output_dictionary["joystick"]["button_menu"] = random.randint(0, 1)
+        output_dictionary["joystick"]["button_view"] = random.randint(0, 1)
+        output_dictionary["joystick"]["button_xbox"] = random.randint(0, 1)
+        output_dictionary["joystick"]["trigger_right"] = random.randint(0, 1)
+        output_dictionary["joystick"]["trigger_left"] = random.randint(0, 1)
+        output_dictionary["joystick"]["bumper_right"] = random.randint(0, 1)
+        output_dictionary["joystick"]["bumper_left"] = random.randint(0, 1)
+        output_dictionary["joystick"]["dpad_up"] = random.randint(0, 1)
+        output_dictionary["joystick"]["dpad_down"] = random.randint(0, 1)
+        output_dictionary["joystick"]["dpad_left"] = random.randint(0, 1)
+        output_dictionary["joystick"]["dpad_right"] = random.randint(0, 1)
         print(output_dictionary)
         time.sleep(1)
 

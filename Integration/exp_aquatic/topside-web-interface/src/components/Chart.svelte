@@ -56,7 +56,8 @@
 					{
 						label: 'Temperature',
 						data: [temperature],
-						borderWidth: 1
+						borderWidth: 1,
+						borderColor: '#F6BD60'
 					}
 				]
 			},
@@ -65,7 +66,8 @@
 					y: {
 						beginAtZero: true
 					}
-				}
+				},
+				maintainAspectRatio: false
 			}
 		});
 		charts[1] = new Chart(charts[1], {
@@ -76,7 +78,8 @@
 					{
 						label: 'Gas',
 						data: [gas],
-						borderWidth: 1
+						borderWidth: 1,
+						borderColor: '#F6BD60'
 					}
 				]
 			},
@@ -84,8 +87,9 @@
 				scales: {
 					y: {
 						beginAtZero: true
-					}
-				}
+					},
+				},
+				maintainAspectRatio: false
 			}
 		});
 		charts[2] = new Chart(charts[2], {
@@ -96,7 +100,8 @@
 					{
 						label: 'Humidity',
 						data: [humidity],
-						borderWidth: 1
+						borderWidth: 1,
+						borderColor: '#F6BD60'
 					}
 				]
 			},
@@ -105,7 +110,8 @@
 					y: {
 						beginAtZero: true
 					}
-				}
+				},
+				maintainAspectRatio: false
 			}
 		});
 		charts[3] = new Chart(charts[3], {
@@ -116,7 +122,8 @@
 					{
 						label: 'Pressure',
 						data: [pressure],
-						borderWidth: 1
+						borderWidth: 1,
+						borderColor: '#F6BD60'
 					}
 				]
 			},
@@ -125,7 +132,8 @@
 					y: {
 						beginAtZero: true
 					}
-				}
+				},
+				maintainAspectRatio: false
 			}
 		});
 		charts[4] = new Chart(charts[4], {
@@ -136,7 +144,8 @@
 					{
 						label: 'Altitude',
 						data: [altitude],
-						borderWidth: 1
+						borderWidth: 1,
+						borderColor: '#F6BD60'
 					}
 				]
 			},
@@ -145,25 +154,29 @@
 					y: {
 						beginAtZero: true
 					}
-				}
+				},
+				maintainAspectRatio: false
 			}
 		});
 		updateData();
 	});
 </script>
 
-<div class="w-1/3">
+<div class="flex items-center justify-between rounded-lg flex-wrap p-2 bg-white bg-opacity-5">
+
+<div class="w-1/5 h-full">
 	<canvas id="tempChart" bind:this={charts[0]} />
 </div>
-<div class="w-1/3">
+<div class="w-1/5 h-full">
 	<canvas id="gasChart" bind:this={charts[1]} />
 </div>
-<div class="w-1/3">
+<div class="w-1/5 h-full">
 	<canvas id="humidityChart" bind:this={charts[2]} />
 </div>
-<div class="w-1/3">
+<div class="w-1/5 h-full">
 	<canvas id="pressureChart" bind:this={charts[3]} />
 </div>
-<div class="w-1/3">
+<div class="w-1/5 h-full">
 	<canvas id="altitudeChart" bind:this={charts[4]} />
+</div>
 </div>
