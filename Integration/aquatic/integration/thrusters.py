@@ -48,12 +48,6 @@ Functions:
     telemetry():
         Returns a dictionary of telemetry data
 
-        
-Todo:
------
-    * Abstract parts of thruster code to work with BLDC motors
-    * More + Better logging
-    * Implement set_thrusters from the original integration code
 """
 
 import logging
@@ -114,12 +108,27 @@ def set_thrusts(*thrusts: float):
     """Sets the thrust of each thruster, raises error if invalid number of thrusts is passed"""
     if len(thrusts) != len(_thrusters):
         # This is critical because it interferes with the core purpose of the robot
-        logging.critical(f"Tried to adjust {len(thrusts)} thrusters with {len(_thrusters)} thrust values")
+        logging.error(f"Tried to adjust {len(thrusts)} thrusters with {len(_thrusters)} thrust values")
         raise ValueError("Number of arguments must match number of thrusters")
 
     for i, thrust in enumerate(thrusts):
         logging.debug(f"Set Thrusters[{i}] to {thrust}")
         _thrusters[i].throttle = thrust
+
+def interpolate(min_value, max_value, steps, time):
+    """Interpolates between min_value and max_value in steps steps over time time"""
+    step_size = (max_value - min_value) / steps
+
+    ds = []
+    if min_value > max_value:
+        ds = reversed(range(max_value, min_value, step_size))
+    else:
+        ds = range(min_value, max_value, step_size)
+
+    for step in ds:
+        set_thrusts(*([step] * 6))
+        time.sleep(time / steps)
+
 
 def adjust_magnitudes(gamepad: Gamepad):
     """Adjusts the thrust of each thruster based on the gamepad state"""
@@ -161,6 +170,8 @@ def _stop():
     """Stops all thrusters"""
     logging.info("Stopping thrusters")
     set_thrusts(0, 0, 0, 0, 0, 0)
+    time.sleep(1) # Give time for all thrusters to stop
+
 
 # Gracefully stop thrusters on exit
 atexit.register(_stop)
@@ -175,10 +186,15 @@ if __name__ == '__main__':
 
     logging.info("Assertions passed, testing thrusters")
 
-    set_thrusts(1, 1, 1, 1, 1, 1)
-    sleep(1)
-    set_thrusts(-1, -1, -1, -1, -1, -1)
-    sleep(1)
+    while True:
+        interpolate(
+            min_value=0, 
+            max_value=0.5, 
+            steps=5, 
+            time=1
+        )
+        time.sleep(1)
+
 
     logging.info("Testing complete")
 
