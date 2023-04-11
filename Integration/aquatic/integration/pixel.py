@@ -46,16 +46,16 @@ Functions:
         
 Todo:
 -----
-    * More + Better logging
+    * More + Better logger
     * Telemetry/ diagnostics data
 """
 
-import logging
+from logger import logger
 import board
 from neopixel import NeoPixel, GRB
 import atexit
 
-logging.info("Initializing Pixels")
+logger.info("Initializing Pixels")
 _neopixel = NeoPixel(
     pin = board.D18,
     n = 1,
@@ -104,15 +104,14 @@ atexit.register(_stop)
 
 if __name__ == '__main__':
     """Test code for thrusters"""
-    logging.basicConfig(level=logging.DEBUG)
-    logging.info("Testing neopixel")
+    logger.info("Testing neopixel")
 
     from time import sleep
 
     assert _neopixel is not None, "Neopixel not initialized"
     assert _neopixel.pin is not None, "Neopixel pin not bound to pin"
 
-    logging.info("Assertions passed, testing neopixel")
+    logger.info("Assertions passed, testing neopixel")
 
     set_color(_red=255, _green=0, _blue=0)
     show()
@@ -130,4 +129,4 @@ if __name__ == '__main__':
     show()
     sleep(1)
 
-    logging.info("Neopixel test passed")
+    logger.info("Neopixel test passed")

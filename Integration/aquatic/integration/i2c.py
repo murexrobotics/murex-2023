@@ -14,6 +14,7 @@ Atrributes:
 
 from busio import I2C
 from board import SCL, SDA
+from logger import logger
 
 i2c = I2C(SCL, SDA)
 

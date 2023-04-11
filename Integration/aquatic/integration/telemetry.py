@@ -38,7 +38,7 @@ Functions:
 import asyncio
 import websockets
 import json
-import logging
+from logger import logger
 
 IP = "192.168.100.1"
 PORT = 1234
@@ -58,10 +58,10 @@ def _handler(*components):
                     telemetry_data.update(temp_telemetry) # Store findings
                 else:
                     # If object does not have associated telemetry method something wrong has been passed in
-                    logging.error(f"Object {component} does not have a telemetry method")
+                    logger.error(f"Object {component} does not have a telemetry method")
                     raise TypeError(f"Object {component} does not have a telemetry method")
             
-            logging.debug("Telemetry Payload Sent: ")
+            logger.debug("Telemetry Payload Sent: ")
             await websocket.send(str(json.dumps(telemetry_data))) # Send telemetry data to client
             await asyncio.sleep(PERIOD)
             
@@ -70,7 +70,7 @@ def _handler(*components):
 async def start(*components):
     """Starts telemetry websocket server"""
     async with websockets.serve(_handler(*components), IP, PORT):
-        logging.info(f"Telemetry server started on {IP}:{PORT}")
+        logger.info(f"Telemetry server started on {IP}:{PORT}")
         await asyncio.Future() # TODO: Swap for something else if there is time
 
 async def _test():
@@ -83,6 +83,5 @@ async def _test():
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
     # Running this as server is the test, functionality should be tested manually
     asyncio.run(_test())

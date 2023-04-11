@@ -50,7 +50,7 @@ Functions:
 
 """
 
-import logging
+from logger import logger
 import time
 import atexit
 
@@ -83,7 +83,7 @@ class Thruster():
     def throttle(self, throttle: float):
         if throttle > 1 or throttle < -1:
             message = f"Thruster throttle set to {throttle}, which is outside of the range [-1, 1]"
-            logging.error(message) # It is bad but not quite critical, still warants a program exit though for testing
+            logger.error(message) # It is bad but not quite critical, still warants a program exit though for testing
             # For competition, errors should be handled differently so that the program does not exit while in the water even if something critical goes wrong
             raise ValueError(message)
         
@@ -101,18 +101,18 @@ class Thruster():
 
 _thrusters = [Thruster(channel) for channel in THRUSTER_CHANNELS]
 time.sleep(THRUSTER_INIT_TIME)
-logging.info("Thrusters Initialized")
+logger.info("Thrusters Initialized")
 
 # Thruster Methods
 def set_thrusts(*thrusts: float):
     """Sets the thrust of each thruster, raises error if invalid number of thrusts is passed"""
     if len(thrusts) != len(_thrusters):
         # This is critical because it interferes with the core purpose of the robot
-        logging.error(f"Tried to adjust {len(thrusts)} thrusters with {len(_thrusters)} thrust values")
+        logger.error(f"Tried to adjust {len(thrusts)} thrusters with {len(_thrusters)} thrust values")
         raise ValueError("Number of arguments must match number of thrusters")
 
     for i, thrust in enumerate(thrusts):
-        logging.debug(f"Set Thrusters[{i}] to {thrust}")
+        logger.debug(f"Set Thrusters[{i}] to {thrust}")
         _thrusters[i].throttle = thrust
 
 def interpolate(min_value, max_value, steps, time):
@@ -133,7 +133,7 @@ def interpolate(min_value, max_value, steps, time):
 def adjust_magnitudes(gamepad: Gamepad):
     """Adjusts the thrust of each thruster based on the gamepad state"""
     # TODO: Update this so it uses new thrust vectoring formula and add togglable thrust normalization mode.
-    logging.info("Updating thrusters from gamepad")
+    logger.info("Updating thrusters from gamepad")
 
     # Aidan's Old Thrust Vectoring Formula
     turn_right, turn_left = gamepad.turn
@@ -168,7 +168,7 @@ def telemetry():
 
 def _stop():
     """Stops all thrusters"""
-    logging.info("Stopping thrusters")
+    logger.info("Stopping thrusters")
     set_thrusts(0, 0, 0, 0, 0, 0)
     time.sleep(1) # Give time for all thrusters to stop
 
@@ -178,13 +178,12 @@ atexit.register(_stop)
 
 if __name__ == '__main__':
     """Test Thrusters"""
-    logging.basicConfig(level=logging.DEBUG)
-    logging.info("Testing thrusters")
+    logger.info("Testing thrusters")
     
     from time import sleep
     assert len(_thrusters) == 6, "Thrusters not initialized properly, there should be 6"
 
-    logging.info("Assertions passed, testing thrusters")
+    logger.info("Assertions passed, testing thrusters")
 
     while True:
         interpolate(
@@ -196,7 +195,7 @@ if __name__ == '__main__':
         time.sleep(1)
 
 
-    logging.info("Testing complete")
+    logger.info("Testing complete")
 
 
 
