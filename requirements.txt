@@ -1,0 +1,17 @@
+Adafruit-Blinka==8.15.2
+adafruit-circuitpython-bme680==3.4.12
+adafruit-circuitpython-busdevice==5.2.3
+adafruit-circuitpython-motor==3.4.9
+adafruit-circuitpython-neopixel==6.3.8
+adafruit-circuitpython-pca9685==3.4.8
+adafruit-circuitpython-pixelbuf==2.0.0
+adafruit-circuitpython-register==1.9.15
+adafruit-circuitpython-requests==1.13.0
+adafruit-circuitpython-typing==1.8.3
+Adafruit-PlatformDetect==3.40.3
+Adafruit-PureIO==1.1.10
+numpy==1.24.2
+pyftdi==0.54.0
+pyserial==3.5
+pyusb==1.2.1
+typing_extensions==4.5.0
