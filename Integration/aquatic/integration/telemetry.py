@@ -41,7 +41,7 @@ import json
 from logger import logger
 
 IP = "192.168.100.1"
-PORT = 1234
+PORT = 5678
 PERIOD = 1 # Adjust as needed, controls how often telemetry is sent
 
 
