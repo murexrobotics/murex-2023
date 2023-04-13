@@ -29,7 +29,7 @@ pca = PCA9685(i2c)
 pca.frequency = 50
 
 logger.debug("Allocating PWM Channels")
-THRUSTER_CHANNELS = pca.channels[:6]
+THRUSTER_CHANNELS = [pca.channels[12], pca.channels[14], pca.channels[15], pca.channels[3], pca.channels[4], pca.channels[5]]
 ARM_BLDC_CHANNELS = pca.channels[6:10]
 CAMERA_SERVO_CHANNEL = pca.channels[10]
 
