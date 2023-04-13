@@ -61,7 +61,7 @@ def _handler(*components):
                     logger.error(f"Object {component} does not have a telemetry method")
                     raise TypeError(f"Object {component} does not have a telemetry method")
             
-            logger.debug("Telemetry Payload Sent: ")
+            logger.debug(f"Telemetry Payload Sent: {telemetry_data}")
             await websocket.send(str(json.dumps(telemetry_data))) # Send telemetry data to client
             await asyncio.sleep(PERIOD)
             

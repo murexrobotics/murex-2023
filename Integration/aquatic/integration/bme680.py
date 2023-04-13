@@ -1,5 +1,6 @@
 from logger import logger
 from adafruit_bme680 import Adafruit_BME680_I2C
+from i2c import i2c
 
 SEA_LEVEL_PRESSURE = 1013.25
 TEMPERATURE_OFFSET = -5
@@ -38,12 +39,15 @@ class BME680():
             "gas": self.gas,
             "altitude": self.altitude
         }}
-    
+
+bme = BME680(i2c)
+
+
 if __name__ == "__main__":
     """Test code for BME680"""
     logger.info("Testing BME680")
     
-    import i2c
+    from i2c import i2c
     assert i2c.scan() is not [], "No I2C devices found"
 
     logger.info("Assertions Passed, testing BME680")

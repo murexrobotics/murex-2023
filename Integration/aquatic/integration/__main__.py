@@ -1,44 +1,28 @@
 import os
-from socket import socket, AF_INET, SOCK_DGRAM
+from logger import logger
+import time
 
-from .gamepad import Gamepad
-from .bme680 import BME680
-from .camera import Camera
-from .i2c import i2c
-from .pca9685 import CAMERA_SERVO_CHANNEL
-from . import thrusters, pixel
+from bme680 import bme
+import thrusters
+import telemetry
 
-gamepad = Gamepad()
-bme680 = BME680(i2c)
-camera = Camera(CAMERA_SERVO_CHANNEL)
+# from camera import Camera
 
-os.system("ffmpeg -f v4l2 -i /dev/video0 -c:v h264_v4l2m2m -b:v 125000 -fflags nobuffer -flags low_delay -preset ultrafast -tune zerolatency -probesize 32 -num_output_buffers 32 -num_capture_buffers 16 -analyzeduration 0 -f mpegts udp://192.168.100.52:1234")
+logger.info("Starting Camera")
+os.system("ffmpeg -f v4l2 -i /dev/video0 -c:v h264_v4l2m2m -vf scale=1440x900 -b:v 3000k -fflags nobuffer -flags low_delay -preset ultrafast -tune zerolatency -probesize 32 -num_output_buffers 32 -num_capture_buffers 16 -analyzeduration 0 -f mpegts udp://192.168.100.54:1234")
+telemetry.start(bme, thrusters)
 
-ip = "192.168.100.1"
-port = 6666
-
-# Create socket for server
-server = socket(AF_INET, SOCK_DGRAM, 0)
-server.bind((ip, port))
-
+logger.info("Entering Event Loop")
 while True:
-    hid_code, game_state = gamepad.get_new_input()
-    thrusters.adjust_magnitudes(gamepad)
+    time.sleep(1)
+    thrusters.interpolate(
+        target=0.5, 
+        duration=5
+    )
 
-    # @TODO: experimental support for arm motors
-    # arm_bldcs[0] = claw
-    # arm_bldcs[1] = servo
-    # arm_bldcs[2] = turning 1
-    # arm_bldcs[3] = turning 2
+    time.sleep(1)
+    thrusters.interpolate(
+        target=0, 
+        duration=5
+    )
 
-    camera.rotate(hid_code, game_state)
-
-    # @TODO: host webserver with telemetry/diagnostic data?
-    # @TODO: better debugging/logging potential
-
-    # Change color of Neopixel
-    # Nothing curretnly changes color of Neopixel
-    pixel.show()
-
-    # Stream Telemetry
-    # asyncio.run(telemetry_server.main(output_dictionary))

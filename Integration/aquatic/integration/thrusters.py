@@ -115,19 +115,18 @@ def set_thrusts(*thrusts: float):
         logger.debug(f"Set Thrusters[{i}] to {thrust}")
         _thrusters[i].throttle = thrust
 
-def interpolate(min_value, max_value, steps, time):
+def interpolate(target, duration):
     """Interpolates between min_value and max_value in steps steps over time time"""
-    step_size = (max_value - min_value) / steps
 
-    ds = []
-    if min_value > max_value:
-        ds = reversed(range(max_value, min_value, step_size))
-    else:
-        ds = range(min_value, max_value, step_size)
+    steps = duration * 10
+    current = _thrusters[0].throttle
+    step_size = (target - current) / steps
 
-    for step in ds:
-        set_thrusts(*([step] * 6))
-        time.sleep(time / steps)
+    ds = current
+    for _ in range(steps):
+        set_thrusts(*([ds] * 6))
+        ds += step_size
+        time.sleep(duration / steps)
 
 
 def adjust_magnitudes(gamepad: Gamepad):
@@ -185,14 +184,17 @@ if __name__ == '__main__':
 
     logger.info("Assertions passed, testing thrusters")
 
-    while True:
-        interpolate(
-            min_value=0, 
-            max_value=0.5, 
-            steps=5, 
-            time=1
-        )
-        time.sleep(1)
+    time.sleep(1)
+    interpolate(
+        target=0.5, 
+        duration=5
+    )
+    time.sleep(1)
+    interpolate(
+        target=0, 
+        duration=5
+    )
+    time.sleep(1)
 
 
     logger.info("Testing complete")
