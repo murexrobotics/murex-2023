@@ -147,7 +147,6 @@ def init_thrusters():
     time.sleep(7)
     logging.info("Thrusters Initialized")
 
-
 def end():
     pca.deinit()
     logging.info("PCA9685 Deinitialized")
@@ -258,7 +257,18 @@ def gamepad_map_joystick(x):
 def gamepad_map_trigger(x):
     return int(np.interp(x, [0, 1023], [-1,1]))
 
-
+import subprocess
+def restart():
+    print("restarting Pi")
+    command = "/usr/bin/sudo /sbin/shutdown -r now"
+    process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+    output = process.communicate()[0]
+    print(output)
+def communicate(command):
+    print("running new command")
+    process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+    output = process.communicate()[0]
+    print(output)
 
 if __name__ == "__main__":
     try:
