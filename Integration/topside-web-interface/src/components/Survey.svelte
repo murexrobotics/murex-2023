@@ -33,6 +33,7 @@
 
     a{
     padding: 15px 32px;
+    border: #444;
     text-align: center;
     display: inline-block;
     font-size: 16px;
@@ -42,7 +43,7 @@
 </style>
 <form id="form" action="../update_constants.py" method="POST">
   <div>
-    <p>Thrusters</p>
+    <h3>Thrusters</h3>
     <Textfield status_name="front-right" status={fr}></Textfield>
     <Textfield status_name="front-left" status={fl}></Textfield>
     <Textfield status_name="back-right" status={br}></Textfield>
@@ -51,14 +52,14 @@
     <Textfield status_name="velocity2" status={v2}></Textfield>
   </div>
   <div>
-    <p>Arm</p>
+    <h3>Arm</h3>
     <Textfield status_name="back-left" status={bldc0}></Textfield>
     <Textfield status_name="front-right" status={bldc1}></Textfield>
     <Textfield status_name="front-left" status={bldc2}></Textfield>
     <Textfield status_name="back-right" status={bldc3}></Textfield>
   </div>
   <div>
-    <p>Misc</p>
+    <h3>Misc</h3>
     <Textfield status_name="Camera Angle" status={cam_angle}></Textfield>
     <Textfield status_name="Restart Pi?" status={"No"}></Textfield>
     <Textfield status_name="Restart PCA9685?" status={"No"}></Textfield>
