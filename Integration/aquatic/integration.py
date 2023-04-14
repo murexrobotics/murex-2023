@@ -257,19 +257,6 @@ def gamepad_map_joystick(x):
 def gamepad_map_trigger(x):
     return int(np.interp(x, [0, 1023], [-1,1]))
 
-import subprocess
-def restart():
-    print("restarting Pi")
-    command = "/usr/bin/sudo /sbin/shutdown -r now"
-    process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
-    output = process.communicate()[0]
-    print(output)
-def communicate(command):
-    print("running new command")
-    process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
-    output = process.communicate()[0]
-    print(output)
-
 if __name__ == "__main__":
     try:
         os.system("ffmpeg -f v4l2 -i /dev/video0 -c:v h264_v4l2m2m -b:v 125000 -fflags nobuffer -flags low_delay -preset ultrafast -tune zerolatency -probesize 32 -num_output_buffers 32 -num_capture_buffers 16 -analyzeduration 0 -f mpegts udp://192.168.100.52:1234")

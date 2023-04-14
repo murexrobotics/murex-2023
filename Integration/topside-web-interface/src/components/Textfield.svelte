@@ -13,13 +13,12 @@
 
   .form-control {
       text-align: left;
-      margin-bottom: 25px;
+      margin-bottom: 10px;
   }
 
-  /* Styling form-control Label */
   .form-control label {
       display: block;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
   }
 
   .form-control input{

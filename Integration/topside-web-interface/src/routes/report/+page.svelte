@@ -56,8 +56,5 @@
 </h1> -->
 
 <body class = "h-screen w-screen bg-no-repeat bg-cover bg-center bg-murex-gif" >
-    <div class = "absolute w-1/3 top-16 left-16 p-5 rounded-lg bg-white bg-opacity-5">
-        <Survey fr={fr}, fl={fl}, br={br}, bl={bl}, v1={v1}, v2={v2}, bldc0={bldc0}, bldc1={bldc1}, bldc2={bldc2}, bldc3={bldc3}></Survey>
-    </div>
-
+    <Survey fr={fr}, fl={fl}, br={br}, bl={bl}, v1={v1}, v2={v2}, bldc0={bldc0}, bldc1={bldc1}, bldc2={bldc2}, bldc3={bldc3}></Survey>
 </body>
