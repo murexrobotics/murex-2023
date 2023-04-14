@@ -157,12 +157,13 @@ def adjust_magnitudes(gamepad: Gamepad):
     )
 
 def telemetry():
-    return { "thrusters": {
+    return { "thruster": {
         "fr": _thrusters[0].throttle,
         "fl": _thrusters[1].throttle,
         "br": _thrusters[2].throttle,
         "bl": _thrusters[3].throttle,
-        "v": _thrusters[4].throttle,
+        "v1": _thrusters[4].throttle,
+        "v2": _thrusters[5].throttle
     }}
 
 def _stop():
