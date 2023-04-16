@@ -17,7 +17,7 @@
       color: #444;
     }
     
-    button {
+    .button {
       background-color: #db5d44;
       border-radius: 10px;
       font-family: inherit;
@@ -42,29 +42,29 @@
       font-weight: bold;
     }
 </style>
-<form class = "relative w-screen h-screen" id="form" action="../update_constants.py" method="POST">
-  <div id="field" class = "absolute w-1/3 left-8 top-8 p-3 rounded-lg bg-white bg-opacity-5">
+<form class = "relative w-screen h-screen" id="form" action="" method="POST">
+  <div id="field" class = "absolute w-1/4 left-8 top-8 p-3 rounded-lg bg-white bg-opacity-5">
     <h3>Thrusters</h3>
     <Textfield status_name="front-right" status={fr}></Textfield>
     <Textfield status_name="front-left" status={fl}></Textfield>
     <Textfield status_name="back-right" status={br}></Textfield>
     <Textfield status_name="back-left" status={bl}></Textfield>
   </div>
-  <div id="field" class = "absolute w-1/3 right-8 top-8 p-3 rounded-lg bg-white bg-opacity-5">
+  <div id="field" class = "absolute w-1/4 right-8 top-8 p-3 rounded-lg bg-white bg-opacity-5">
     <h3>Arm</h3>
     <Textfield status_name="BLDC0" status={bldc0}></Textfield>
     <Textfield status_name="BLDC1" status={bldc1}></Textfield>
     <Textfield status_name="BLDC2" status={bldc2}></Textfield>
     <Textfield status_name="BLDC3" status={bldc3}></Textfield>
   </div>
-  <div id="field" class = "absolute w-1/3 left-8 bottom-8 p-3 rounded-lg bg-white bg-opacity-5">
+  <div id="field" class = "absolute w-1/4 p-3 rounded-lg bg-white bg-opacity-5" style="top:10%;left:37%">
     <h3>Reboot</h3>
-    <Textfield status_name="Restart Pi?" status={"No"}></Textfield>
-    <Textfield status_name="Restart PCA9685?" status={"No"}></Textfield>
-    <Textfield status_name="Restart Camera?" status={"No"}></Textfield>
+    <Textfield status_name="Restart_Pi?" status={"No"}></Textfield>
+    <Textfield status_name="Restart_PCA9685?" status={"No"}></Textfield>
+    <Textfield status_name="Restart_Camera?" status={"No"}></Textfield>
   </div>
-  <div id="field" class = "absolute w-1/3 right-8 bottom-8 p-3 rounded-lg bg-white bg-opacity-5">
-    <button type="submit" value="submit">
+  <div id="field" class = "absolute w-1/6 p-3 rounded-lg bg-white bg-opacity-5" style="bottom:10%;left:41%">
+    <button class="button" type="submit" value="submit">
       UPDATE!
     </button>
     <a href="/" class="button">Exit</a>

@@ -35,5 +35,5 @@
   <label for="name" id="label-name">
       {status_name}
   </label>
-  <input type="text" id={status_name} value={status}/>
+  <input type="text" name={status_name} id={status_name} value={status}/>
 </div>
