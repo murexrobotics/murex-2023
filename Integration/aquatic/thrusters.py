@@ -1,3 +1,9 @@
+# v1: 12 front
+# v2: 15
+# fr: 4
+# fl: 14
+# br: 5
+# bl: 3
 """
 Contains all code nececary to control thrusters. Use the methods 
 to interact with thrusters, rather than interacting directly 
