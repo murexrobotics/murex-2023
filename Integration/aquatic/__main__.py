@@ -3,6 +3,7 @@ from logger import logger
 import time
 import asyncio
 import threading
+import controller_client
 
 from bme680 import bme
 import thrusters
@@ -10,6 +11,8 @@ import telemetry
 import atexit
 
 # from camera import Camera
+logger.info("Starting auto thruster updater")
+thrusters.start_listening()
 
 logger.info("Starting Camera")
 video_stream = threading.Thread(
@@ -33,18 +36,8 @@ atexit.register(_stop)
 
 
 logger.info("Entering Event Loop")
-while True:
-    time.sleep(1)
-    thrusters.interpolate(
-        target=0.5, 
-        duration=5
-    )
-
-    time.sleep(1)
-    thrusters.interpolate(
-        target=0, 
-        duration=5
-    )
+asyncio.run(controller_client.listen())
+    
 
 
 

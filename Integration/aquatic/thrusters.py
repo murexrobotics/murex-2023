@@ -53,6 +53,8 @@ Functions:
 from logger import logger
 import time
 import atexit
+import math
+import threading
 
 from gamepad import Gamepad
 from pca9685 import THRUSTER_CHANNELS
@@ -68,6 +70,8 @@ MAX_DUTY_CYCLE = 6880 # IMPORTANT: Subject to change, this was the max achieved 
 MIN_DUTY_CYCLE = 3600 # IMPORTANT: Subject to change, this was the max achieved in testing but powersupply could not supply sufficient current current
 
 # Actually initialize thrusters
+
+SPEED_UP_TIME = 2 # Time it takes to go from 0 to 1 in seconds
 
 class Thruster():
     def __init__(self, channel: PWMChannel):
@@ -100,6 +104,8 @@ class Thruster():
         self.pwm_channel.duty_cycle = STOP_DUTY_CYCLE
 
 _thrusters = [Thruster(channel) for channel in THRUSTER_CHANNELS]
+_thrust_targets = [0] * len(_thrusters)
+thruster_thread = None
 time.sleep(THRUSTER_INIT_TIME)
 logger.info("Thrusters Initialized")
 
@@ -115,7 +121,7 @@ def set_thrusts(*thrusts: float):
         logger.debug(f"Set Thrusters[{i}] to {thrust}")
         _thrusters[i].throttle = thrust
 
-def interpolate(target, duration):
+def simple_interpolate(target, duration):
     """Interpolates between min_value and max_value in steps steps over time time"""
 
     steps = duration * 10
@@ -128,33 +134,10 @@ def interpolate(target, duration):
         ds += step_size
         time.sleep(duration / steps)
 
-
-def adjust_magnitudes(gamepad: Gamepad):
-    """Adjusts the thrust of each thruster based on the gamepad state"""
-    # TODO: Update this so it uses new thrust vectoring formula and add togglable thrust normalization mode.
-    logger.info("Updating thrusters from gamepad")
-
-    # Aidan's Old Thrust Vectoring Formula
-    turn_right, turn_left = gamepad.turn
-    [left_joystick_x, left_joystick_y] = gamepad.left_joystick
-
-    thruster_fr = ((-left_joystick_y + left_joystick_x) / (2 ** 0.5)) + turn_left
-    thruster_fl = ((left_joystick_y + left_joystick_x) / (2 ** 0.5)) + turn_right
-    thruster_br = ((left_joystick_y + left_joystick_x) / (2 ** 0.5)) + -turn_left
-    thruster_bl = ((-left_joystick_y + left_joystick_x) / (2 ** 0.5)) + -turn_right
-
-    # ± 0.1 Vertical Deadzoning
-    [_, right_joystick_y] = gamepad.right_joystick
-    thruster_v = right_joystick_y if abs(right_joystick_y) > 0.1 else 0
-
-    set_thrusts(
-        thruster_fr,
-        thruster_fl,
-        thruster_br,
-        thruster_bl,
-        thruster_v,
-        thruster_v
-    )
+def complex_interpolation_step(*targets):
+    for i, target in enumerate(targets):
+        current_thrust = _thrusters[i].throttle
+        _thrusters[i].throttle = math.copysign(1, target - current_thrust) * (0.05 / SPEED_UP_TIME)
 
 def telemetry():
     return { "thruster": {
@@ -166,12 +149,27 @@ def telemetry():
         "v2": _thrusters[5].throttle
     }}
 
+def _thruster_event_loop():
+    # TODO: Expand further
+    while True:
+        complex_interpolation_step(*_thrust_targets)
+        time.sleep(0.05)
+
+def start_listening():
+    global thruster_thread
+    thruster_thread = threading.Thread(target=_thruster_event_loop)
+
 def _stop():
     """Stops all thrusters"""
     logger.info("Stopping thrusters")
     set_thrusts(0, 0, 0, 0, 0, 0)
-    time.sleep(1) # Give time for all thrusters to stop
 
+    try:
+        thruster_thread.join()
+    except:
+        pass # This is a bad pattern but it just means that program exited before thruster thread was started
+
+    time.sleep(1) # Give time for all thrusters to stop
 
 # Gracefully stop thrusters on exit
 atexit.register(_stop)
@@ -186,12 +184,12 @@ if __name__ == '__main__':
     logger.info("Assertions passed, testing thrusters")
 
     time.sleep(1)
-    interpolate(
+    simple_interpolate(
         target=0.5, 
         duration=5
     )
     time.sleep(1)
-    interpolate(
+    simple_interpolate(
         target=0, 
         duration=5
     )
