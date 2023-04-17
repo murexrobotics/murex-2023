@@ -29,18 +29,11 @@ pca = PCA9685(i2c)
 pca.frequency = 50
 
 logger.debug("Allocating PWM Channels")
+
+# Thrusters: FR, FL, BL, BR, V1, V2
 THRUSTER_CHANNELS = [pca.channels[4], pca.channels[14], pca.channels[3], pca.channels[5], pca.channels[12], pca.channels[15]]
 ARM_BLDC_CHANNELS = pca.channels[6:10]
 CAMERA_SERVO_CHANNEL = pca.channels[10]
-
-def _test():
-    """Tests PCA9685 initialization"""
-    logger.info("Testing PCA9685 initialization")
-    assert pca is not None, "PCA9685 not initialized"
-    assert i2c.scan() != [], "No I2C devices found, PCA Not registered"
-    assert len(THRUSTER_CHANNELS) == 6, "Incorrect number of thruster channels"
-    assert len(ARM_BLDC_CHANNELS) == 4, "Incorrect number of arm BLDC channels"
-    logger.info("PCA9685 initialized successfully")
 
 def _stop():
     """Deinitializes PCA9685"""
@@ -52,4 +45,10 @@ logger.debug("Registering PCA9685 deinitialization")
 atexit.register(_stop)
 
 if __name__ == '__main__':
-    _test()
+    """Tests PCA9685 initialization"""
+    logger.info("Testing PCA9685 initialization")
+    assert pca is not None, "PCA9685 not initialized"
+    assert i2c.scan() != [], "No I2C devices found, PCA Not registered"
+    assert len(THRUSTER_CHANNELS) == 6, "Incorrect number of thruster channels"
+    assert len(ARM_BLDC_CHANNELS) == 4, "Incorrect number of arm BLDC channels"
+    logger.info("PCA9685 initialized successfully")
