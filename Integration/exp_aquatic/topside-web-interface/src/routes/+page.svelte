@@ -94,7 +94,7 @@
         <div class = "absolute w-1/3 bottom-8 right-16 p-3 rounded-lg bg-white bg-opacity-5">
             <Camera camera_angle={camera_angle}></Camera>
         </div>
-        <div class = "absolute p-3 rounded-lg bg-white bg-opacity-5" style="top:10%;left:44%">
+        <div class = "absolute p-3 rounded-lg bg-white bg-opacity-5" style="top:10%;left:45%">
             <Button fr={fr} fl={fl} br={br} bl={bl} v1={v1}  v2={v2}> </Button> 
         </div>
     </div>

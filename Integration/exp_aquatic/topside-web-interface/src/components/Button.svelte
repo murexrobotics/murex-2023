@@ -1,12 +1,14 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 <style>
-    a{
-      padding: 15px 32px;
+    .button{
       text-align: center;
       display: inline-block;
-      font-size: 16px;
-      margin: 4px 2px;
-      background-color: #F6BD60;
+    }
+    i{
+      color: #db5d44;
+      font-size: 100px;
     }
 </style>
 
-<a href="/report" class="button">Run Report</a>
+<a href="/report" class="button"><i class="material-icons">error</i></a>

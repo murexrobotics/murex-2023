@@ -8,7 +8,6 @@
     /**
    * @type {any}
    */
-   export let fr,fl,br,bl,v1,v2,bldc0,bldc1,bldc2,bldc3,cam_angle;
 </script>
 <style>
     #field{
@@ -38,24 +37,28 @@
     }
 
     h3{
-      font-size: 35px;
+      font-size: 30px;
       font-weight: bold;
     }
-</style>
-<form class = "relative w-screen h-screen" id="form" action="" method="POST">
+    </style>
+<form class = "relative w-screen h-screen" id="form" action="../src/update_constants.py" enctype="multipart/form-data" method="POST">
   <div id="field" class = "absolute w-1/4 left-8 top-8 p-3 rounded-lg bg-white bg-opacity-5">
     <h3>Thrusters</h3>
-    <Textfield status_name="front-right" status={fr}></Textfield>
-    <Textfield status_name="front-left" status={fl}></Textfield>
-    <Textfield status_name="back-right" status={br}></Textfield>
-    <Textfield status_name="back-left" status={bl}></Textfield>
+    <Textfield status_name="MIN_PULSE_WIDTH" status={1100}></Textfield>
+    <Textfield status_name="MAX_PULSE_WIDTH" status={1900}></Textfield>
+    <Textfield status_name="STOP_DUTY_CYCLE" status={5232}></Textfield>
+    <Textfield status_name="MAX_DUTY_CYCLE" status={6880}></Textfield>
+    <Textfield status_name="MIN_DUTY_CYCLE" status={3600}></Textfield>
+    <Textfield status_name="THRUSTER_INIT_TIME" status={7}></Textfield>
   </div>
   <div id="field" class = "absolute w-1/4 right-8 top-8 p-3 rounded-lg bg-white bg-opacity-5">
-    <h3>Arm</h3>
-    <Textfield status_name="BLDC0" status={bldc0}></Textfield>
-    <Textfield status_name="BLDC1" status={bldc1}></Textfield>
-    <Textfield status_name="BLDC2" status={bldc2}></Textfield>
-    <Textfield status_name="BLDC3" status={bldc3}></Textfield>
+    <h3>Misc.</h3>
+    <Textfield status_name="SEA_LEVEL_PRESSURE" status={1013.25}></Textfield>
+    <Textfield status_name="TEMPERATURE_OFFSET" status={-5}></Textfield>
+    <Textfield status_name="Camera_angle_speed" status={15}></Textfield>
+    <Textfield status_name="Joystick_maximum" status={0.2}></Textfield>
+    <Textfield status_name="PCA_Frequency" status={50}></Textfield>
+    <Textfield status_name="Neopixel_brightness" status={0.2}></Textfield>
   </div>
   <div id="field" class = "absolute w-1/4 p-3 rounded-lg bg-white bg-opacity-5" style="top:10%;left:37%">
     <h3>Reboot</h3>
