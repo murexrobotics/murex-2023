@@ -58,7 +58,7 @@
     <Textfield status_name="Camera_angle_speed" status={15}></Textfield>
     <Textfield status_name="Joystick_maximum" status={0.2}></Textfield>
     <Textfield status_name="PCA_Frequency" status={50}></Textfield>
-    <Textfield status_name="Neopixel_brightness" status={0.2}></Textfield>
+    <Textfield status_name="Telemetry_Period" status={1}></Textfield>
   </div>
   <div id="field" class = "absolute w-1/4 p-3 rounded-lg bg-white bg-opacity-5" style="top:10%;left:37%">
     <h3>Reboot</h3>

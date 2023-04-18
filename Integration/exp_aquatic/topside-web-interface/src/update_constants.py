@@ -17,7 +17,7 @@ command_list = {
     'Camera_angle_speed': 15,
     'Joystick_maximum': 0.2,
     'PCA_Frequency': 50,
-    'Neopixel_brightness': 0.2,
+    'Telemetry_Period': 1,
     'MIN_PULSE_WIDTH': 1100,
     'MAX_PULSE_WIDTH': 1900,
     'STOP_DUTY_CYCLE': 5232,
