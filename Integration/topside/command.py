@@ -1,13 +1,12 @@
 import asyncio
 import websockets
 import json
-import logging
+from logger import logger
 from controller import decode_controller_input
 
-IP = "localhost" # TODO: CHANGE TO COMPUTER IP
+IP = "192.168.100.54"
 PORT = 6789
 PERIOD = 0.05 # Adjust as needed, controls how often telemetry is sent
-
 
 async def send(websocket):
     """Sends controller data to client"""
@@ -21,12 +20,12 @@ async def send(websocket):
             "v": controller_data_raw[4]
         }
 
-        logging.debug(f"Telemetry Payload Sent: {controller_data}")
+        logger.debug(f"Telemetry Payload Sent: {controller_data}")
         await websocket.send(str(json.dumps(controller_data))) # Send telemetry data to client
         await asyncio.sleep(PERIOD)
 
 async def start():
     """Starts telemetry websocket server"""
     async with websockets.serve(send, IP, PORT):
-        logging.info(f"Telemetry server started on {IP}:{PORT}")
+        logger.info(f"Telemetry server started on {IP}:{PORT}")
         await asyncio.Future() # TODO: Swap for something else if there is time
