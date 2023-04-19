@@ -1,11 +1,14 @@
 #!C:\Python27\python.exe
 import cgi
 import cgitb
-import socket
+import websockets
+import asyncio
+from websockets.sync.client import connect
+import logging
 import sys
 
-ip = "192.168.100.1"
-port = 5678
+IP = "localhost" # TODO: CHANGE TO COMPUTER IP
+PORT = 6789
 
 cgitb.enable()
 form = cgi.FieldStorage()
@@ -15,9 +18,9 @@ command_list = {
     'SEA_LEVEL_PRESSURE': 1013.25,
     'TEMPERATURE_OFFSET': -5,
     'Camera_angle_speed': 15,
-    'Joystick_maximum': 0.2,
+    'Joystick_maximum': 0.4,
     'PCA_Frequency': 50,
-    'Telemetry_Period': 1,
+    'Telemetry_Period': 0.05,
     'MIN_PULSE_WIDTH': 1100,
     'MAX_PULSE_WIDTH': 1900,
     'STOP_DUTY_CYCLE': 5232,
@@ -42,16 +45,13 @@ for status_name in command_list:
 
 print("Content-Type: text/html")
 
-try:
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
-    print("connection established to rpi")
+with connect("ws://localhost:8765") as websocket:
+    message = websocket.recv()
+    logging.debug(f"Received: {message}")
     for status_name in command_list:
         command = status_name + " : " + command_list[status_name]
-        s.sendto(command.encode('utf-8'), (ip, port))
-        print("Client Sent --- ", command)
-    s.close()
-except:
-    print("connection failed")
+        logging.debug(f"Telemetry Payload Sent [{command}] on {IP}:{PORT}")
+        websocket.send(str(json.dumps(command)))
 
 print('''
 <a href="/routes/+page.svelte" class="button">Exit</a>
