@@ -1,4 +1,3 @@
-#!C:\Python27\python.exe
 import cgi
 import cgitb
 import websockets
@@ -6,14 +5,13 @@ import asyncio
 from websockets.sync.client import connect
 import logging
 import sys
+import os
 
-IP = "localhost" # TODO: CHANGE TO COMPUTER IP
+IP = "localhost"
 PORT = 6789
 
 cgitb.enable()
 form = cgi.FieldStorage()
-
-#default constants
 command_list = {
     'SEA_LEVEL_PRESSURE': 1013.25,
     'TEMPERATURE_OFFSET': -5,
@@ -49,10 +47,6 @@ with connect("ws://localhost:8765") as websocket:
     message = websocket.recv()
     logging.debug(f"Received: {message}")
     for status_name in command_list:
-        command = status_name + " : " + command_list[status_name]
+        command = status_name + " : " + str(command_list[status_name])
         logging.debug(f"Telemetry Payload Sent [{command}] on {IP}:{PORT}")
         websocket.send(str(json.dumps(command)))
-
-print('''
-<a href="/routes/+page.svelte" class="button">Exit</a>
-''')
