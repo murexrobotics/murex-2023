@@ -31,7 +31,7 @@ pca.frequency = 50
 logger.debug("Allocating PWM Channels")
 
 # Thrusters: FR, FL, BL, BR, V1, V2
-THRUSTER_CHANNELS = [pca.channels[4], pca.channels[14], pca.channels[3], pca.channels[5], pca.channels[12], pca.channels[15]]
+THRUSTER_CHANNELS = [pca.channels[15], pca.channels[14], pca.channels[4], pca.channels[5], pca.channels[3], pca.channels[12]]
 ARM_BLDC_CHANNELS = pca.channels[6:10]
 CAMERA_SERVO_CHANNEL = pca.channels[10]
 

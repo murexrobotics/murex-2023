@@ -41,6 +41,9 @@ Functions:
 ----------
     set_thrusts(*thrusts):
         Sets the thrust of each thruster
+    
+    set_thrust_targets(*thrusts):
+        Sets the target thrust value for each thruster
 
     simple_interpolate(target, duration):
         Interpolates all thrusters to the target thrust over the duration
@@ -73,7 +76,7 @@ STOP_DUTY_CYCLE = 5232
 MAX_DUTY_CYCLE = 6880 # IMPORTANT: Subject to change, this was the max achieved in testing but powersupply could not supply sufficient current current
 MIN_DUTY_CYCLE = 3600 # IMPORTANT: Subject to change, this was the max achieved in testing but powersupply could not supply sufficient current current
 
-SPEED_UP_TIME = 2 # Time it takes to go from 0 to 1 in seconds
+SPEED_UP_TIME = 5 # Time it takes to go from 0 to 1 in seconds
 
 class Thruster():
     def __init__(self, channel: PWMChannel):
@@ -122,6 +125,17 @@ def set_thrusts(*thrusts: float):
         logger.debug(f"Set Thrusters[{i}] to {thrust}")
         _thrusters[i].throttle = thrust
 
+def set_thrust_targets(*thrusts: float):
+    """Sets the thrust targets of each thruster, raises error if invalid number of thrusts is passed"""
+    if len(thrusts) != len(_thrusters):
+        # This is critical because it interferes with the core purpose of the robot
+        logger.error(f"Tried to adjust {len(thrusts)} thrusters with {len(_thrusters)} thrust values")
+        raise ValueError("Number of arguments must match number of thrusters")
+
+    for i, thrust in enumerate(thrusts):
+        logger.debug(f"Set Thrusters[{i}] Target to {thrust}")
+        _thrust_targets[i] = thrust
+
 def simple_interpolate(target, duration):
     """Interpolates between min_value and max_value in steps steps over time time"""
     steps = duration * 10
@@ -138,7 +152,9 @@ def complex_interpolation_step(*targets):
     """Brings each thruster closer to its target"""
     for i, target in enumerate(targets):
         current_thrust = _thrusters[i].throttle
-        _thrusters[i].throttle = math.copysign(1, target - current_thrust) * (0.05 / SPEED_UP_TIME)
+        logger.debug(f"Current Thrust[{i}]: {current_thrust}")
+        _thrusters[i].throttle += math.copysign(1, target - current_thrust) * (0.05 / SPEED_UP_TIME)
+        _thrusters[i].throttle = min(max(_thrusters[i].throttle, -1), 1)
 
 def telemetry():
     return { 
@@ -159,9 +175,11 @@ def start_listening():
         # TODO: Expand further
         while True:
             complex_interpolation_step(*_thrust_targets)
+            logger.debug(_thrust_targets)
             time.sleep(0.05)
 
     thruster_thread = threading.Thread(target=_thruster_event_loop)
+    thruster_thread.start()
 
 def _stop():
     """Stops all thrusters"""
@@ -172,10 +190,8 @@ def _stop():
     try:
         thruster_thread.join()
     except:
-        logger.warn("Thruster update thread was not started")
-        pass # This is a bad pattern but it just means that program exited before thruster thread was started
-
-    
+        logger.warning("Thruster update thread was not started")
+        exit()
 
 # Gracefully stop thrusters on exit
 atexit.register(_stop)
@@ -189,17 +205,27 @@ if __name__ == '__main__':
 
     logger.info("Assertions passed, testing thrusters")
 
-    time.sleep(1)
-    simple_interpolate(
-        target=0.5, 
-        duration=5
-    )
-    time.sleep(1)
-    simple_interpolate(
-        target=0, 
-        duration=5
-    )
-    time.sleep(1)
+
+    start_listening()
+
+    set_thrust_targets(1, 1, 1, 1, 1, 1)
+    time.sleep(6)
+    set_thrust_targets(-1, -1, -1, -1, -1,- 1)
+    time.sleep(6)
+    set_thrust_targets(0, 0, 0, 0, 0, 0)
+    time.sleep(6)
+
+    # time.sleep(1)
+    # simple_interpolate(
+    #     target=0.5, 
+    #     duration=5
+    # )
+    # time.sleep(1)
+    # simple_interpolate(
+    #     target=0, 
+    #     duration=5
+    # )
+    # time.sleep(1)
 
 
     logger.info("Testing complete")

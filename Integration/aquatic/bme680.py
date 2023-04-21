@@ -75,7 +75,7 @@ bme = BME680(i2c)
 def _stop():
     """Deinitializes BME680"""
     logger.info("Deinitializing BME680")
-    bme.bme680.deinit()
+    # bme.bme680.deinit()
 
 atexit.register(_stop)
 

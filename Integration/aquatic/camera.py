@@ -61,7 +61,7 @@ def set_angle(angle):
     """Sets the camera servo angle"""
     # Truncate to make sure it doesn't hit the glass wall
     if angle != (new_angle := max(min(angle, MAX_ANGLE), MIN_ANGLE)):
-        logger.warn("Passed in angle to large/ small for enclosure, truncating")
+        logger.warning("Passed in angle to large/ small for enclosure, truncating")
         angle = new_angle
     
     logger.debug(f"Setting camera angle: {angle}")

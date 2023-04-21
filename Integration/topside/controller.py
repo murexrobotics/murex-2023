@@ -1,13 +1,18 @@
 import pygame
 import thrust
 import atexit
-import time
 
 LEFT_JOYSTICK_X = 0
 LEFT_JOYSTICK_Y = 1
 RIGHT_JOYSTICK_X = 2
 RIGHT_JOYSTICK_Y = 3
 
+GAMEPAD_RIGHT = 14
+GAMEPAD_LEFT = 13
+GAMEPAD_UP = 11
+GAMEPAD_DOWN = 12
+
+CAMERA_TURN = 1
 
 pygame.init()
 pygame.joystick.init()
@@ -25,12 +30,22 @@ def decode_controller_input():
     turn = round(controller.get_axis(LEFT_JOYSTICK_X), 2)
     vert = -round(controller.get_axis(LEFT_JOYSTICK_Y), 2)
 
-    (fr, fl, bl, br) = thrust.maximized_thrust_vectoring(x, y, turn) # No need for assignment here just have it to remember what it returns
-    return (fr, fl, bl, br, vert)
+    camera = 0
+    if controller.get_button(GAMEPAD_RIGHT):
+        camera = CAMERA_TURN
+    elif controller.get_button(GAMEPAD_LEFT):
+        camera = -CAMERA_TURN
 
-if __name__ == '__main__':
-    # while True:
-    #     (fr, fl, bl, br) = decode_controller_input()
-    #     print(f"{fl} {fr}\n{bl} {br}\n")
-    #     time.sleep(1)
-    pass
+    (fr, fl, bl, br) = thrust.thrust_vectoring(x, y, turn)
+    return (fr, fl, bl, br, vert, camera)
+
+# A: 0
+# B: 1
+# X: 2
+# Y: 3
+# GR: 14
+# GL: 13
+# GU: 11
+# GD: 12
+# RB: 10
+# LB: 9

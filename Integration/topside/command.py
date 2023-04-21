@@ -17,7 +17,8 @@ async def send(websocket):
             "fl": controller_data_raw[1],
             "bl": controller_data_raw[2],
             "br": controller_data_raw[3],
-            "v": controller_data_raw[4]
+            "v": controller_data_raw[4],
+            "camera": controller_data_raw[5]
         }
 
         logger.debug(f"Telemetry Payload Sent: {controller_data}")

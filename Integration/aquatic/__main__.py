@@ -18,7 +18,7 @@ logger.info("Starting auto thruster updater")
 thrusters.start_listening()
 
 logger.info("Entering Event Loop")
-asyncio.run(controller_client.listen())
+asyncio.run(controller_client.listen(thrusters, camera))
     
 
 
