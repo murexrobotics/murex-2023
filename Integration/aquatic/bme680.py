@@ -77,6 +77,7 @@ def _stop():
     logger.info("Deinitializing BME680")
     # bme.bme680.deinit()
 
+logger.debug("Registering BME deinitialization")
 atexit.register(_stop)
 
 if __name__ == "__main__":

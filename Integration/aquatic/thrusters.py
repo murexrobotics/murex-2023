@@ -76,7 +76,7 @@ STOP_DUTY_CYCLE = 5232
 MAX_DUTY_CYCLE = 6880 # IMPORTANT: Subject to change, this was the max achieved in testing but powersupply could not supply sufficient current current
 MIN_DUTY_CYCLE = 3600 # IMPORTANT: Subject to change, this was the max achieved in testing but powersupply could not supply sufficient current current
 
-SPEED_UP_TIME = 5 # Time it takes to go from 0 to 1 in seconds
+SPEED_UP_TIME = 4 # Time it takes to go from 0 to 1 in seconds
 
 class Thruster():
     def __init__(self, channel: PWMChannel):
@@ -122,6 +122,7 @@ def set_thrusts(*thrusts: float):
         raise ValueError("Number of arguments must match number of thrusters")
 
     for i, thrust in enumerate(thrusts):
+        thrust = min(max(thrust, -1), 1) # Truncate to ensure bounds
         logger.debug(f"Set Thrusters[{i}] to {thrust}")
         _thrusters[i].throttle = thrust
 
@@ -133,6 +134,7 @@ def set_thrust_targets(*thrusts: float):
         raise ValueError("Number of arguments must match number of thrusters")
 
     for i, thrust in enumerate(thrusts):
+        thrust = min(max(thrust, -1), 1) # Truncate to ensure bounds
         logger.debug(f"Set Thrusters[{i}] Target to {thrust}")
         _thrust_targets[i] = thrust
 
@@ -175,7 +177,6 @@ def start_listening():
         # TODO: Expand further
         while True:
             complex_interpolation_step(*_thrust_targets)
-            logger.debug(_thrust_targets)
             time.sleep(0.05)
 
     thruster_thread = threading.Thread(target=_thruster_event_loop)
@@ -194,6 +195,7 @@ def _stop():
         exit()
 
 # Gracefully stop thrusters on exit
+logger.debug("Registering Thruster deinitialization")
 atexit.register(_stop)
 
 if __name__ == '__main__':

@@ -86,6 +86,7 @@ def _stop():
     camera.angle = 90
     video_stream.join()
 
+logger.debug("Registering Camera deinitialitialization")
 atexit.register(_stop)
 
 

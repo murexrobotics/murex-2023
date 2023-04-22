@@ -2,6 +2,8 @@
 
 import logging
 
+LEVEL = logging.DEBUG
+
 class Formatter(logging.Formatter):
     grey = "\x1b[36;20m"
     green = "\x1b[32;20m"
@@ -26,11 +28,11 @@ class Formatter(logging.Formatter):
     
 # create logger with 'spam_application'
 logger = logging.getLogger("Murex")
-logger.setLevel(logging.DEBUG)
+logger.setLevel(LEVEL)
 
 # create console handler with a higher log level
 ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
+ch.setLevel(LEVEL)
 ch.setFormatter(Formatter())
 logger.addHandler(ch)
 

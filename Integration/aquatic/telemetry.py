@@ -99,6 +99,7 @@ def _stop():
     logger.info("Stopping Telemetry Server")
     telemetry_server.join()
 
+logger.debug("Registering Telemetry Server exit")
 atexit.register(_stop)
 
 if __name__ == "__main__":
