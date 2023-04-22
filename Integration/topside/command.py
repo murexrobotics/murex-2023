@@ -10,6 +10,7 @@ PERIOD = 0.05 # Adjust as needed, controls how often telemetry is sent
 
 async def send(websocket):
     """Sends controller data to client"""
+    logger.info("Telemetry client connected")
     while True:
         controller_data_raw = decode_controller_input()
         controller_data = {
@@ -18,7 +19,9 @@ async def send(websocket):
             "bl": controller_data_raw[2],
             "br": controller_data_raw[3],
             "v": controller_data_raw[4],
-            "camera": controller_data_raw[5]
+            "camera": controller_data_raw[5],
+            "claw": controller_data_raw[6],
+            "arm_angle": controller_data_raw[7]
         }
 
         logger.debug(f"Telemetry Payload Sent: {controller_data}")
