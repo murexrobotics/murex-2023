@@ -4,6 +4,7 @@ import asyncio
 import threading
 
 # IMPORTANT: Initialization Order is important
+# IMPORTANT: Do not remove any imports, intialization is done when module is imported
 import i2c
 import pca9685
 import bme680
