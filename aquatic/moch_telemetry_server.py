@@ -1,19 +1,18 @@
+"""Generates random telemetry data and sends it to the client. Use to test web-interface"""
+
 import asyncio
 import json
 import random
 import threading
 import time
 import websockets
-import os
 import random
+
 CONNECTIONS = set()
 
 n = 0
-
 camera_servo_angle = 0
-
 neopixel_r, neopixel_g, neopixel_b = 255, 255, 255
-
 thruster_fr = None
 thruster_fl = None
 thruster_br = None
@@ -50,7 +49,6 @@ trigger_right = None
 trigger_left = None
 bumper_right = None
 bumper_left = None
-
 
 output_dictionary = {
     "thruster": {
@@ -115,7 +113,6 @@ async def echo():
 async def main():
     async with websockets.serve(register, "localhost", 5678):
         await echo()
-
 
 def infiniteloop2():
     global output_dictionary

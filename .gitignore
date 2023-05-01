@@ -1,6 +1,3 @@
-# Node modules
-*/node_modules/
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -131,5 +128,30 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-
 *.DS_Store
+
+# Svelte .gitignore
+.idea
+.DS_Store
+.vscode
+node_modules
+*.map
+/src/compiler/compile/internal_exports.ts
+/compiler.d.ts
+/compiler.*js
+/index.*js
+/ssr.*js
+/action
+/internal
+/store
+/easing
+/motion
+/transition
+/animate
+/scratch/
+/test/*/samples/_
+/yarn-error.log
+_actual*.*
+_output
+/types
+.eslintcache
