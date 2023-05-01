@@ -1,6 +1,6 @@
 """
-Initializes PCA9685, and defines channels to be used for 
-each component. (Deinitializes on program exit)
+Starts telemetry server that relays ROV health to web-interface. 
+(Gracefully terminates on program exit)
 
 Note: Importing a module runs all the code inside of it,
 however, python modules are also singleton by nature. At 
@@ -16,11 +16,10 @@ import telemetry
 
 # Initialize components
 import thrusters
-import gamepad
 import bme680
 
 # Start telemetry server
-telemetry.start(gamepad, thrusters, bme680)
+telemetry.start(thrusters, bme680)
 ...
 ```
 
