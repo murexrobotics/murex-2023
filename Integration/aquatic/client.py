@@ -1,8 +1,13 @@
 import asyncio
 import websockets
 
+IP = "192.168.100.1"
+# IP = "192.168.100.54"
+PORT = 5678
+# PORT = 6789
+
 async def hello():
-    uri = "ws://192.168.100.1:1234"
+    uri = f"ws://{IP}:{PORT}"
     async with websockets.connect(uri) as websocket:
         while True:
             message = await websocket.recv()

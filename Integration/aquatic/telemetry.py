@@ -35,15 +35,21 @@ Functions:
     start(*components): Starts telemetry server that send updated from components
 """
 
+from threading import Thread
+import os
 import asyncio
 import websockets
 import json
+import atexit
 from logger import logger
+
+from bme680 import bme
+import thrusters
+import camera
 
 IP = "192.168.100.1"
 PORT = 5678
 PERIOD = 1 # Adjust as needed, controls how often telemetry is sent
-
 
 def _handler(*components):
     """Returns handler function for telemetry websocket server"""
@@ -78,9 +84,23 @@ async def _test():
     from i2c import i2c
     from bme680 import BME680
     bme = BME680(i2c) # BME is easiest to test with, but any component can be used
-
     await start(bme)
 
+logger.info("Starting Telemetry Server")
+telemetry_server = Thread(
+    target=asyncio.run,
+    args=(start(bme, thrusters, camera),)
+)
+telemetry_server.start()
+
+# Gracefully deinitialize components on program exit
+def _stop():
+    """Stops telemetry server on program exit"""
+    logger.info("Stopping Telemetry Server")
+    telemetry_server.join()
+
+logger.debug("Registering Telemetry Server exit")
+atexit.register(_stop)
 
 if __name__ == "__main__":
     # Running this as server is the test, functionality should be tested manually

@@ -17,6 +17,7 @@ from board import SCL, SDA
 from logger import logger
 
 i2c = I2C(SCL, SDA)
+logger.info("Initialized I2C Bus")
 
 if __name__ == '__main__':
     assert i2c is not None, "I2C bus not initialized"
