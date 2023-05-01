@@ -28,7 +28,7 @@
 	 */
     let camera_angle, fr, fl, br, bl, v1, v2, temperature, gas, humidity, pressure, altitude, bme680, joystick_left_x, joystick_left_y, joystick_right_x, joystick_right_y, button_y, button_x, button_b, button_a, button_menu, button_view, button_xbox, trigger_right, trigger_left, bumper_right, bumper_left, dpad_up, dpad_down, dpad_left, dpad_right;
     onMount(() => {
-		websocket = new WebSocket("ws://localhost:5678/");
+		websocket = new WebSocket("ws://192.168.100.1:5678/");
 		websocket.onmessage = ({
 			data
 		}) => {
