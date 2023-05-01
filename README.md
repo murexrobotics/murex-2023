@@ -1,7 +1,3 @@
-
-
-![Logo](https://github.com/murexrobotics/murex-2023/blob/Restructured-Repository/logo.png?raw=true)
-
 <p align="center">
     <img src="https://github.com/murexrobotics/murex-2023/blob/Restructured-Repository/logo.png?raw=true" width="400">
 </p>
