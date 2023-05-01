@@ -10,7 +10,7 @@ MAX_PIVOT = 180
 MIN_PIVOT = 0
 
 MAX_CLAW = 180
-MIN_CLAW = 0
+MIN_CLAW = 85
 
 def set_pivot(angle):
     """Sets the arm pivot angle"""

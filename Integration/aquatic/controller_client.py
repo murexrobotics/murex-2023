@@ -27,8 +27,10 @@ async def listen(thrusters, camera, arm):
             data = json.loads(message)
             thrusters.set_thrust_targets(data["fr"], data["fl"], data["bl"], data["br"], data["v"], data["v"])
             camera.set_angle(camera.camera.angle + data["camera"])
-            arm.change_pivot(data["arm_angle"])
-            arm.change_claw_position(data["claw"]) # Will go out of bounds, function will truncate but give warnings
+
+            # TODO: Test this code
+            arm.set_pivot(arm.pivot.angle + data["arm_angle"])
+            arm.set_claw_position(arm.claw.angle + data["claw"]) # Will go out of bounds, function will truncate but give warnings
 
 
 if __name__ == "__main__":

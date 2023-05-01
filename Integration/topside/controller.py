@@ -60,7 +60,7 @@ def decode_controller_input():
         claw = -CLAW_PERCENT
 
     (fr, fl, bl, br) = thrust.thrust_vectoring(x, y, turn)
-    return (fr, fl, bl, br, vert, camera, claw, arm_angle)
+    return (-fr, -fl, bl, br, -vert, camera, claw, arm_angle)
 
 # A: 0
 # B: 1

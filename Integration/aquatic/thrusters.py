@@ -210,12 +210,12 @@ if __name__ == '__main__':
 
     start_listening()
 
-    set_thrust_targets(1, 1, 1, 1, 1, 1)
-    time.sleep(6)
-    set_thrust_targets(-1, -1, -1, -1, -1,- 1)
-    time.sleep(6)
+    set_thrust_targets(0.5, 0.5, 0.5, 0.5, 0.5, 0.5)
+    time.sleep(3)
+    set_thrust_targets(-0.5, -0.5, -0.5, -0.5, -0.5,- 0.5)
+    time.sleep(3)
     set_thrust_targets(0, 0, 0, 0, 0, 0)
-    time.sleep(6)
+    time.sleep(3)
 
     # time.sleep(1)
     # simple_interpolate(
@@ -233,5 +233,10 @@ if __name__ == '__main__':
     logger.info("Testing complete")
 
 
-
+# V1 3
+# V2 14
+# FR 5
+# FL 12
+# BL 4
+# BR 15
 

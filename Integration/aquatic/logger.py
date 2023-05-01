@@ -2,7 +2,7 @@
 
 import logging
 
-LEVEL = logging.DEBUG
+LEVEL = logging.INFO
 
 class Formatter(logging.Formatter):
     grey = "\x1b[36;20m"

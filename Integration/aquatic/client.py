@@ -3,8 +3,8 @@ import websockets
 
 IP = "192.168.100.1"
 # IP = "192.168.100.54"
-PORT = 1234
-# PORT = 5678
+PORT = 5678
+# PORT = 6789
 
 async def hello():
     uri = f"ws://{IP}:{PORT}"

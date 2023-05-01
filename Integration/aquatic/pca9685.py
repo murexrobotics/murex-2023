@@ -31,11 +31,11 @@ pca.frequency = 50
 logger.debug("Allocating PWM Channels")
 
 # Thrusters: FR, FL, BL, BR, V1, V2
-THRUSTER_CHANNELS = [pca.channels[15], pca.channels[14], pca.channels[4], pca.channels[5], pca.channels[3], pca.channels[12]] # TODO: Fix order
+THRUSTER_CHANNELS = [pca.channels[5], pca.channels[12], pca.channels[4], pca.channels[15], pca.channels[3], pca.channels[14]] # TODO: Fix order
 ARM_BLDC_CHANNELS = pca.channels[6:10]
 CAMERA_SERVO_CHANNEL = pca.channels[10]
-ARM_CLAW_CHANNEL = pca.channels[...] # TODO: Figure out correct PWM channel
-ARM_PIVOT_CHANNEL = pca.channels[...] # TODO: Figure out correct PWM channel
+ARM_CLAW_CHANNEL = pca.channels[13] 
+ARM_PIVOT_CHANNEL = pca.channels[11]
 
 def _stop():
     """Deinitializes PCA9685"""
