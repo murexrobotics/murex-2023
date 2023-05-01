@@ -8,6 +8,7 @@
     import Joystick from '../components/Joystick.svelte';
 	import Navbar from '../components/Navbar.svelte';
 	import Camera from '../components/Camera.svelte';
+    import Button from '../components/Button.svelte';
     let name = 'byran';
     let websocket;
     /**
@@ -78,8 +79,11 @@
 </h1> -->
 
 <body class = "h-screen w-screen bg-no-repeat bg-cover bg-center bg-murex-gif" >
-    
     <div class = "relative w-screen h-4/5">
+        <div class = "absolute w-1/3 top-16 left-16 p-5 rounded-lg bg-white bg-opacity-5">
+            <div></div>
+            <Joystick joystick_left_x={joystick_left_x} joystick_left_y={joystick_left_y} joystick_right_x={joystick_right_x} joystick_right_y={joystick_right_y} button_y={button_y}  button_x={button_x}  button_b={button_b}  button_a={button_a}  button_menu={button_menu} button_view={button_view} button_xbox={button_xbox} trigger_right={trigger_right}  trigger_left={trigger_left}  bumper_right={bumper_right}  bumper_left={bumper_left}  dpad_up={dpad_up} dpad_down={dpad_down} dpad_left={dpad_left} dpad_right={dpad_right}> trigger_right={trigger_right} trigger_left={trigger_left} bumper_right={bumper_right} bumper_left={bumper_left}</Joystick> 
+        </div>
         <div class = "absolute w-1/3 top-16 left-16 p-5 rounded-lg bg-white bg-opacity-5">
             <div></div>
             <Joystick joystick_left_x={joystick_left_x} joystick_left_y={joystick_left_y} joystick_right_x={joystick_right_x} joystick_right_y={joystick_right_y} button_y={button_y}  button_x={button_x}  button_b={button_b}  button_a={button_a}  button_menu={button_menu} button_view={button_view} button_xbox={button_xbox} trigger_right={trigger_right}  trigger_left={trigger_left}  bumper_right={bumper_right}  bumper_left={bumper_left}  dpad_up={dpad_up} dpad_down={dpad_down} dpad_left={dpad_left} dpad_right={dpad_right}> trigger_right={trigger_right} trigger_left={trigger_left} bumper_right={bumper_right} bumper_left={bumper_left}</Joystick> 
@@ -90,6 +94,9 @@
         <div class = "absolute w-1/3 bottom-8 right-16 p-3 rounded-lg bg-white bg-opacity-5">
             <Camera camera_angle={camera_angle}></Camera>
         </div>
+        <div class = "absolute p-3 rounded-lg bg-white bg-opacity-5" style="top:10%;left:46%">
+            <Button></Button> 
+        </div>
     </div>
 
     <div class = "">
@@ -97,5 +104,6 @@
             <Chart temperature={temperature} gas={gas} humidity={humidity} pressure={pressure} altitude={altitude}></Chart>
         </div>
     </div>
+
 
 </body>
