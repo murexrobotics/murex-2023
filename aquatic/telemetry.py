@@ -16,11 +16,10 @@ import telemetry
 
 # Initialize components
 import thrusters
-import gamepad
 import bme680
 
 # Start telemetry server
-telemetry.start(gamepad, thrusters, bme680)
+telemetry.start(thrusters, bme680)
 ...
 ```
 

@@ -1,3 +1,41 @@
+"""
+Handes websocket connection to the topside for control data.
+Currently only supports thruster, camera and arm control but 
+can be exapnded for emergency backup signals and other 
+components. (Gracefully terminates on program exit)
+
+Note: Importing a module runs all the code inside of it,
+however, python modules are also singleton by nature. At 
+any given time only one instance can be created. Thus the 
+code in this file will run only once, on the first import, 
+making it suitable for initialization
+
+Example:
+--------
+```Python
+from controller_client import listen
+import asyncio
+
+# Initialize components
+import thrusters
+import camera
+import arm
+
+# Start listening
+asyncio.run(listen(thrusters, camera, arm))
+...
+```
+
+Constants:
+----------
+    IP (str): IP address of control server
+    PORT (int): Port of control server
+
+Functions:
+----------
+    listen(thrusters, camera, arm): Starts listening for controller data, updates components accordingly
+"""
+
 import asyncio
 import websockets
 import json
@@ -31,7 +69,6 @@ async def listen(thrusters, camera, arm):
             # TODO: Test this code
             arm.set_pivot(arm.pivot.angle + data["arm_angle"])
             arm.set_claw_position(arm.claw.angle + data["claw"]) # Will go out of bounds, function will truncate but give warnings
-
 
 if __name__ == "__main__":
     asyncio.run(listen())
