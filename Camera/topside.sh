@@ -1,1 +1,0 @@
-ffplay -fflags nobuffer -flags low_delay -framedrop -vf setpts=0 -probesize 32 -strict experimental udp://192.168.100.1:1234
