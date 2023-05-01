@@ -1,10 +1,8 @@
 <p align="center">
-    <img src="https://github.com/murexrobotics/murex-2023/blob/Restructured-Repository/logo.png?raw=true" width="400">
+    <img src="https://github.com/murexrobotics/murex-2023/blob/Restructured-Repository/logo.png?raw=true" width="300">
 </p>
 
-<center>
-    <h1>MUREX ROV 2022-2023</h1>
-</center>
+# MUREX ROV 2022-2023
 
 Codebase for the MUREX 2023 ROV for the MATE Underwater Robotics Competition.
 
