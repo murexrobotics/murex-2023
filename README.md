@@ -9,6 +9,7 @@ Codebase for the MUREX 2023 ROV for the MATE Underwater Robotics Competition.
 ## Table of Contents
 - [Setup](Setup)
 - [Usage](Usage)
+- [Design](Design)
 - [License](License)
 
 ## Setup
@@ -48,6 +49,24 @@ python3 aquatic
 cd web-interface
 npm run dev
 ```
+
+## Design
+This is a brief overview of how the ROV was designed.
+
+### Mechanical
+[ROV CAD](https://cad.onshape.com/documents/f2c5e508349c88b025f713bf/w/5608aa019685f90fd8c58b6c/e/0061e131f16a5293ec96639c)
+### Programming
+| Codebase | Role |
+|----------|------|
+| [Aquatic](https://github.com/murexrobotics/murex-2023/tree/main/aquatic) | Handles interfacing with sensors and thrusters. Control of ROV. |
+| [Topside](https://github.com/murexrobotics/murex-2023/tree/main/topside) | Decodes control input and overall ROV control signals. |
+| [Web Interface](https://github.com/murexrobotics/murex-2023/tree/main/web-interface) | Displays telemetry data from ROV for realtime monitoring and emergency control. |
+### Electrical
+
+| PCB | Role |
+|-----|------|
+| Integration PCB | Supply power to all components, sensors and PWM signal generator. |
+| ESC Integration PCB | Connects directly to ESC's and Integration PCB to make connecting ESC's easier. **Was not used in final revision** |
 
 ## License
 
