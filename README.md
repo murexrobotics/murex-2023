@@ -12,7 +12,7 @@ Codebase for the MUREX 2023 ROV for the MATE Underwater Robotics Competition.
 - [License](License)
 
 ## Setup
-To use propperly use the Murex codebase the user must have some software installed in addition to the MUREX codebase.
+To use properly use the Murex codebase the user must have some software installed in addition to the MUREX codebase.
 
 ### Dev Dependencies
 - [Python](https://www.python.org/downloads/) v3.9 (Or Newer)
