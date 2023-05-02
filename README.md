@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/murexrobotics/murex-2023/blob/Restructured-Repository/logo.png?raw=true" width="300">
+    <img src="https://github.com/murexrobotics/murex-2023/blob/main/logo.png?raw=true" width="300">
 </p>
 
 # MUREX ROV 2022-2023
